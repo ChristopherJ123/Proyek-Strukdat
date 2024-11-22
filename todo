@@ -1,7 +1,10 @@
 Fitur done:
-- koordinat x,y vertex dan perhitungan sederhana dijkstra
+- vertex menggunakan class Vertex yang menggunakan sistem koordinat x,y
+- edge menggunakan class Path
+- dijkstra algorithm sederhana
 
 Todo:
-- kemacetan
-- jalan khusus
+- print belok kanan, belok kiri, atau jalan lurus terus di print_graph()
+- jalan(edge) khusus car, motorcycle, wallking
+- weight tiap edge(jalan) final yang sudah dihitung dari distance dengan kemacetan, kecepatan vehicle, bensin, dll
 - dll
