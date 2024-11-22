@@ -1,4 +1,4 @@
-from Vehicle import Vehicle
+from Transportation import Vehicle
 
 class Car(Vehicle):
     def __init__(self, speed, fuel_efficiency):

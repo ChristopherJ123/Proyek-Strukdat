@@ -1,4 +1,4 @@
-from Vehicle import Vehicle
+from Transportation import Vehicle
 
 class Walking(Vehicle):
     def __init__(self, speed):
