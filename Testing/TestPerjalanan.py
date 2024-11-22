@@ -7,6 +7,8 @@ while dict1[destination[-1]] is not None:
     print("dict1[destination[-1]] is " + str(dict1[destination[-1]]))
     print("---")
     destination.append(dict1[destination[-1]])
+    # print(dict1[destination[-1]])
+    # print("---")
 destination.reverse()
 
 print("===")

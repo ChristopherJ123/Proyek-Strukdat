@@ -1,6 +1,5 @@
-from heapq import heapify, heappop, heappush
-import math
 from Graph import Graph
+from Path import Path
 from Vertex import Vertex
 
 
@@ -15,15 +14,45 @@ F = Vertex(8, -5, "F")
 G = Vertex(9, 4, "G")
 H = Vertex(8, -2, "H")
 
+pathAB = Path("Jl. Alfa Bravo", 1, True, 0.0)
+pathAC = Path("Jl. Alfa Charlie", 1, True, 0.0)
+pathAD = Path("Jl. Alfa Delta", 1, True, 0.0)
+
+pathBG = Path("Jl. Bravo Golf", 1, True, 0.0)
+
+pathCF = Path("Jl. Charlie Foxtrot", 1, True, 0.0)
+
+pathDG = Path("Jl. Delta Golf", 1, True, 0.0)
+pathDH = Path("Jl. Delta Hotel", 1, True, 0.0)
+
+pathFE = Path("Jl. Foxtrot Echo", 1, True, 0.0)
+
+pathGE = Path("Jl. Golf Echo", 1, True, 0.0)
+
+pathHC = Path("Jl. Hotel Charlie", 1, True, 0.0)
+pathHE = Path("Jl. Hotel Echo", 1, True, 0.0)
+
+
+# graph = {
+#     A : [B, C, D],
+#     B : [G],
+#     C : [F],
+#     D : [G, H],
+#     E : [],
+#     F : [E],
+#     G : [E],
+#     H : [C, E]
+# }
+
 graph = {
-    A : [B, C, D],
-    B : [G],
-    C : [F],
-    D : [G, H],
-    E : [],
-    F : [E],
-    G : [E],
-    H : [C, E]
+    A : {B : pathAB, C : pathAC, D : pathAD},
+    B : {G : pathBG},
+    C : {F : pathCF},
+    D : {G : pathDG, H : pathDH},
+    E : {},
+    F : {E : pathFE},
+    G : {E : pathGE},
+    H : {C : pathHC, E : pathHE}
 }
 
 gr.make_graph(graph)
@@ -31,7 +60,7 @@ gr.print_graph()
 distances, predecessor = gr.shortest_distances(A)
 print(f"distances: {distances}")
 print(f"predecessor: {predecessor}")
-print("Pergi dari A ke E")
+print("Pergi dari A ke E:")
 gr.go_from_a_to_b(A, E)
 
 

@@ -11,7 +11,9 @@ class Graph:
             if start not in self.graph:
                 self.graph[start] = {}
             for end in visit:
-                self.graph[start][end] = math.sqrt(pow(abs(start.x - end.x), 2) + pow(abs(start.y - end.y), 2))
+                if end not in self.graph[start]:
+                    self.graph[start][end] = graph[start][end]
+                self.graph[start][end].set_distance(math.sqrt(pow(abs(start.x - end.x), 2) + pow(abs(start.y - end.y), 2)))
 
 
     def add_edge(self, vertex1, vertex2):
@@ -21,8 +23,9 @@ class Graph:
 
 
     def shortest_distances(self, source: str):
+        # Dijkstra Algorithm
         # Initialize the values of all nodes with infinity
-        distances = {node: float("inf") for node in self.graph}
+        distances = {vertex: float("inf") for vertex in self.graph}
         distances[source] = 0  # Set the source value to 0
 
         # Initialize priority queue
@@ -33,41 +36,42 @@ class Graph:
         visited = set()
 
         while pq:
-            current_distance, current_node = heappop(pq)
+            current_distance, current_vertex = heappop(pq)
 
-            if current_node in visited:
+            if current_vertex in visited:
                 continue
-            visited.add(current_node)
+            visited.add(current_vertex)
 
-            for neighbour_node, neighbour_distance in self.graph[current_node].items():
-                # Calculate the distance from current_node to the neighbour_node
-                tentative_distance = current_distance + neighbour_distance
-                if tentative_distance < distances[neighbour_node]:
-                    distances[neighbour_node] = tentative_distance
-                    heappush(pq, (tentative_distance, neighbour_node))
+            for neighbour_vertex, neighbour_path in self.graph[current_vertex].items():
+                # Calculate the distance from current_vertex to the neighbour_vertex
+                tentative_distance = current_distance + neighbour_path.distance
+                if tentative_distance < distances[neighbour_vertex]:
+                    distances[neighbour_vertex] = tentative_distance
+                    heappush(pq, (tentative_distance, neighbour_vertex))
 
         # Melihat Jalur awalnya
-        predecessors = {node: None for node in self.graph}
-        for node, distance in distances.items():
-            for neighbour_node, neighbour_distance in self.graph[node].items():
-                if distance + neighbour_distance == distances[neighbour_node]:
-                    predecessors[neighbour_node] = node
+        predecessors = {vertex: [None, None] for vertex in self.graph}
+        for vertex, distance in distances.items():
+            for neighbour_vertex, neighbour_path in self.graph[vertex].items():
+                if distance + neighbour_path.distance == distances[neighbour_vertex]:
+                    predecessors[neighbour_vertex] = [vertex, neighbour_path]
 
         return distances, predecessors
 
     def go_from_a_to_b(self, source, destination):
         distances, predecessors = self.shortest_distances(source)
-        path = [destination]
-        while predecessors[path[-1]] is not None:
-            path.append(predecessors[path[-1]])
-        path.reverse()
+        trace = []
+        current_vertex = destination
+        while predecessors[current_vertex][1] is not None:
+            trace.append(predecessors[current_vertex][1])
+            current_vertex = predecessors[current_vertex][0]
+        trace.reverse()
 
-        for i in range(len(path)):
-            print(path[i].name)
-        return path
+        for i in range(len(trace)):
+            print(trace[i].road_name if trace[i] else None)
+        return trace
 
     def print_graph(self):
         for start, end in self.graph.items():
             for key, value in end.items():
-                print(start.name, key.name, value)
-
+                print(f"{start.name}, {key.name}, {value.distance}, {value.road_name}")
