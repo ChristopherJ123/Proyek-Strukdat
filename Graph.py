@@ -22,7 +22,7 @@ class Graph:
         self.graph[vertex1][vertex2] = math.sqrt(pow(abs(vertex1.x - vertex2.x), 2) + pow(abs(vertex1.y - vertex2.y), 2))
 
 
-    def shortest_distances(self, source: str):
+    def shortest_distances(self, source):
         # Dijkstra Algorithm
         # Initialize the values of all nodes with infinity
         distances = {vertex: float("inf") for vertex in self.graph}
@@ -53,7 +53,8 @@ class Graph:
         predecessors = {vertex: [None, None] for vertex in self.graph}
         for vertex, distance in distances.items():
             for neighbour_vertex, neighbour_path in self.graph[vertex].items():
-                if distance + neighbour_path.distance == distances[neighbour_vertex]:
+                if (distance + neighbour_path.distance == distances[neighbour_vertex]
+                        and distances[neighbour_vertex] != float('inf')):
                     predecessors[neighbour_vertex] = [vertex, neighbour_path]
 
         return distances, predecessors

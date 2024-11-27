@@ -56,12 +56,22 @@ graph = {
 }
 
 gr.make_graph(graph)
-gr.print_graph()
-distances, predecessor = gr.shortest_distances(A)
-print(f"distances: {distances}")
-print(f"predecessor: {predecessor}")
-print("Pergi dari A ke E:")
-gr.go_from_a_to_b(A, E)
+# gr.print_graph()
+distances, predecessor = gr.shortest_distances(D)
+# print(f"distances: {distances}")
+# print(f"predecessor: {predecessor}")
+
+print("===DISTANCES===")
+for key, value in distances.items():
+    print(f"{key.name}: {value}")
+
+print("===PREDECESSOR===")
+
+for key, value in predecessor.items():
+    print(f"{key.name}: {value[0].name if value[0] else None} {value[1].road_name if value[1] else None}")
+
+print("Pergi dari D ke F:")
+gr.go_from_a_to_b(D, F)
 
 
 # format

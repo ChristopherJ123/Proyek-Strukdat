@@ -28,6 +28,7 @@ class Graph:
     def shortest_distances(self, source: str):
         # Initialize the values of all nodes with infinity
         distances = {node: float("inf") for node in self.graph}
+
         distances[source] = 0  # Set the source value to 0
         print(distances)
 
@@ -99,6 +100,6 @@ G.graph = {
         "G" : {"F": 2, "H": 10},
         "H" : {}
 }
-shortest_distances, shortest_paths = G.shortest_distances("A")
+shortest_distances, shortest_paths = G.shortest_distances("D")
 
 print(shortest_distances, shortest_paths)
