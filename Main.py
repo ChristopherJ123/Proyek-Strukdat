@@ -63,7 +63,7 @@ distances, predecessor = gr.shortest_distances(D)
 
 print("===DISTANCES===")
 for key, value in distances.items():
-    print(f"{key.name}: {value}")
+    print(f"{key.name}: {value} KM")
 
 print("===PREDECESSOR===")
 

@@ -5,10 +5,17 @@ Fitur done:
 - class Transportation, Car, Motorcycle, Walking (Marco)
 
 Todo:
-- print belok kanan, belok kiri, atau jalan lurus terus di print_graph()
-- jalan(edge) khusus car, motorcycle, atau walking
-- implementasi class transportation beserta child class" nya
-- weight tiap edge(jalan) final (waktu final) yang sudah dihitung dari distance dengan kemacetan, kecepatan vehicle, bensin, dll. Bisa dibilang weight edge final = waktu final melewati edge tersebut
-- perhitungan waktu start time, end time
-- sistem lampu merah, kereta api lintas
-- dll
+1. print belok kanan, belok kiri, atau jalan lurus terus di print_graph() - Chris
+2. jalan(edge) khusus car, motorcycle, atau walking - Marco
+3. implementasi class transportation beserta child class" nya - Jessica
+4. weight tiap edge(jalan) final (waktu final) yang sudah dihitung dari distance dengan kemacetan,
+kecepatan vehicle, bensin, dll. Bisa dibilang weight edge final = waktu final melewati edge tersebut.
+(Jarak * kecepatan vehicle * kemacetan * kondisi jalan = waktu final)
+5. perhitungan waktu start time, end time. (Ex: Start jam 06:00, end jam 09:30)
+6. Bikin graf - Marco
+
+Tambahan":
+6. sistem lampu merah, kereta api lintas
+7. bensin, tempat isi bensin
+8. visualisasi graf, seperti pakai matplotlib
+dll
