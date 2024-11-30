@@ -16,13 +16,14 @@ class Graph:
                 self.graph[start][end].set_distance(math.sqrt(pow(abs(start.x - end.x), 2) + pow(abs(start.y - end.y), 2)))
 
 
-    def add_edge(self, vertex1, vertex2):
+    def add_edge(self, vertex1, vertex2, edge):
         if vertex1 not in self.graph:
             self.graph[vertex1] = {}
-        self.graph[vertex1][vertex2] = math.sqrt(pow(abs(vertex1.x - vertex2.x), 2) + pow(abs(vertex1.y - vertex2.y), 2))
+        self.graph[vertex1][vertex2] =  edge
+        self.graph[vertex1][vertex2].set_distance(math.sqrt(pow(abs(vertex1.x - vertex2.x), 2) + pow(abs(vertex1.y - vertex2.y), 2)))
 
 
-    def shortest_distances(self, source):
+    def shortest_distances(self, source, vehicle):
         # Dijkstra Algorithm
         # Initialize the values of all nodes with infinity
         distances = {vertex: float("inf") for vertex in self.graph}
@@ -59,8 +60,8 @@ class Graph:
 
         return distances, predecessors
 
-    def go_from_a_to_b(self, source, destination):
-        distances, predecessors = self.shortest_distances(source)
+    def go_from_a_to_b(self, source, destination, vehicle):
+        distances, predecessors = self.shortest_distances(source, vehicle)
         trace = []
         current_vertex = destination
         while predecessors[current_vertex][1] is not None:

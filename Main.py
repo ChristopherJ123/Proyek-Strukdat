@@ -1,9 +1,12 @@
 from Graph import Graph
 from Path import Path
 from Vertex import Vertex
-
+from Walking import Walking
+from Car import Car
+from Motorcycle import Motorcycle
 
 gr = Graph()
+car = Car(50, 10)
 
 A = Vertex(0, 0, "A")
 B = Vertex(3, 4, "B")
@@ -57,7 +60,7 @@ graph = {
 
 gr.make_graph(graph)
 # gr.print_graph()
-distances, predecessor = gr.shortest_distances(D)
+distances, predecessor = gr.shortest_distances(D, car)
 # print(f"distances: {distances}")
 # print(f"predecessor: {predecessor}")
 
@@ -71,7 +74,7 @@ for key, value in predecessor.items():
     print(f"{key.name}: {value[0].name if value[0] else None} {value[1].road_name if value[1] else None}")
 
 print("Pergi dari D ke F:")
-gr.go_from_a_to_b(D, F)
+gr.go_from_a_to_b(D, F, car)
 
 
 # format
