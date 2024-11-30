@@ -65,13 +65,27 @@ class Graph:
     def go_from_a_to_b(self, source, destination, vehicle):
         distances, predecessors = self.shortest_distances(source, vehicle)
         trace = []
+        instruction = []
         current_vertex = destination
         while predecessors[current_vertex][1] is not None:
             trace.append(predecessors[current_vertex][1])
+            #Kalau y nya current lebih besar dari tujuan misal A ke C(cek gambar biar paham), kiri(karena reverse)
+            if (current_vertex.y > predecessors[current_vertex][0].y):
+                instruction.append("Belok Kiri Ke")
+            #Kalau y nya current lebih kecil dari tujuan misal C ke A(cek gambar biar paham), kanan(karena reverse)
+            elif (current_vertex.y < predecessors[current_vertex][0].y):
+                instruction.append("Belok Kanan Ke")
+            #Kalau salah 1 sama berarti lurus aja
+            elif (current_vertex.x == predecessors[current_vertex][0].x or current_vertex.y == predecessors[current_vertex][0].y):
+                instruction.append("Lurus Ke")
+
+
             current_vertex = predecessors[current_vertex][0]
         trace.reverse()
+        instruction.reverse()
 
         for i in range(len(trace)):
+            print(instruction[i] if instruction[i] else None, end = " ")
             print(trace[i].road_name if trace[i] else None)
         return trace
 
