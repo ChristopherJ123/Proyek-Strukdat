@@ -7,6 +7,7 @@ from Motorcycle import Motorcycle
 
 gr = Graph()
 car = Car(50, 10)
+motor = Motorcycle(40, 10)
 
 A = Vertex(0, 0, "A")
 B = Vertex(3, 4, "B")
@@ -16,14 +17,18 @@ E = Vertex(12, 0, "E")
 F = Vertex(8, -5, "F")
 G = Vertex(9, 4, "G")
 H = Vertex(8, -2, "H")
+I = Vertex(0, -5, "I")
 
 pathAB = Path("Jl. Alfa Bravo", 1, True, 0.0)
 pathAC = Path("Jl. Alfa Charlie", 1, True, 0.0)
 pathAD = Path("Jl. Alfa Delta", 1, True, 0.0)
+pathAI = Path("Jl. Alfa India", 3, True, 0.0)
 
 pathBG = Path("Jl. Bravo Golf", 1, True, 0.0)
 
 pathCF = Path("Jl. Charlie Foxtrot", 1, True, 0.0)
+pathCI = Path("Jl. Charlie India", 1, True, 0.0)
+
 
 pathDG = Path("Jl. Delta Golf", 1, True, 0.0)
 pathDH = Path("Jl. Delta Hotel", 1, True, 0.0)
@@ -48,19 +53,20 @@ pathHE = Path("Jl. Hotel Echo", 1, True, 0.0)
 # }
 
 graph = {
-    A : {B : pathAB, C : pathAC, D : pathAD},
+    A : {B : pathAB, C : pathAC, D : pathAD, I : pathAI},
     B : {G : pathBG},
-    C : {F : pathCF},
+    C : {F : pathCF, I : pathCI},
     D : {G : pathDG, H : pathDH},
     E : {},
     F : {E : pathFE},
     G : {E : pathGE},
-    H : {C : pathHC, E : pathHE}
+    H : {C : pathHC, E : pathHE},
+    I : {}
 }
 
 gr.make_graph(graph)
 # gr.print_graph()
-distances, predecessor = gr.shortest_distances(D, car)
+distances, predecessor = gr.shortest_distances(A, car)
 # print(f"distances: {distances}")
 # print(f"predecessor: {predecessor}")
 
@@ -68,13 +74,32 @@ print("===DISTANCES===")
 for key, value in distances.items():
     print(f"{key.name}: {value} KM")
 
+
+
 print("===PREDECESSOR===")
 
 for key, value in predecessor.items():
     print(f"{key.name}: {value[0].name if value[0] else None} {value[1].road_name if value[1] else None}")
 
-print("Pergi dari D ke F:")
-gr.go_from_a_to_b(D, F, car)
+
+print("Pergi dari A ke F:")
+gr.go_from_a_to_b(A, I, car)
+
+print()
+distances2, predecessor2 = gr.shortest_distances(A, motor)
+
+
+print("===DISTANCES 2===")
+for key, value in distances2.items():
+    print(f"{key.name}: {value} KM")
+
+print("===PREDECESSOR 2===")
+
+for key, value in predecessor2.items():
+    print(f"{key.name}: {value[0].name if value[0] else None} {value[1].road_name if value[1] else None}")
+
+print("Pergi dari A ke F 2:")
+gr.go_from_a_to_b(A, I, motor)
 
 
 # format

@@ -4,7 +4,7 @@ class Path:
     def __init__(self, road_name ,road_type, condition, congestion=0.0):
         """
         :param road_name: Nama dari jalan, misalnya 'Jl.Siwalankerto'.
-        :param road_type: Tipe dari jalan, '1 : Jalan biasa', '2 : Jalan Tol', '3 : Jalan sempit', '4 : Jalan pejalan kaki'.
+        :param road_type: Tipe dari jalan, '1 : Jalan biasa', '2 : Jalan Tol', '3 : Jalan sempit/gang', '4 : Jalan pejalan kaki'.
         :param condition: Kondisi dari jalan, 'True : Bagus', 'False : Buruk'.
         :param congestion: Tingkat kemacetan antara range 0.0 - 1.0. Dimana 0.0 Lancar sekali, dan 1.0 full mandek total.
         """
@@ -19,7 +19,7 @@ class Path:
     def travel_time(self, base_speed):
 
         if not self.condition:
-            speed_modifier = 0.8
+            speed_modifier = 0.6
         else:
             speed_modifier = 1.0
 

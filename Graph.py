@@ -45,17 +45,19 @@ class Graph:
 
             for neighbour_vertex, neighbour_path in self.graph[current_vertex].items():
                 # Calculate the distance from current_vertex to the neighbour_vertex
-                tentative_distance = current_distance + neighbour_path.distance
-                if tentative_distance < distances[neighbour_vertex]:
-                    distances[neighbour_vertex] = tentative_distance
-                    heappush(pq, (tentative_distance, neighbour_vertex))
+                # Ini skrg aku tambahin supaya cuma jenis kendaraan tertentu yang bisa lewat jalan tertentu
+                if vehicle.can_traverse(neighbour_path.road_type):
+                    tentative_distance = current_distance + neighbour_path.distance
+                    if tentative_distance < distances[neighbour_vertex]:
+                        distances[neighbour_vertex] = tentative_distance
+                        heappush(pq, (tentative_distance, neighbour_vertex))
 
         # Melihat Jalur awalnya
         predecessors = {vertex: [None, None] for vertex in self.graph}
         for vertex, distance in distances.items():
             for neighbour_vertex, neighbour_path in self.graph[vertex].items():
                 if (distance + neighbour_path.distance == distances[neighbour_vertex]
-                        and distances[neighbour_vertex] != float('inf')):
+                        and distances[neighbour_vertex] != float('inf') and vehicle.can_traverse(neighbour_path.road_type)):
                     predecessors[neighbour_vertex] = [vertex, neighbour_path]
 
         return distances, predecessors
