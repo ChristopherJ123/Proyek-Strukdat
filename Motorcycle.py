@@ -1,8 +1,7 @@
-from Transportation import Vehicle
+from Transportation import Transportation
 
-class Motorcycle(Vehicle):
+class Motorcycle(Transportation):
     def __init__(self, speed, fuel_efficiency):
-        super().__init__(speed, {1, 3})
+        super().__init__(speed, {1, 3}, fuel_efficiency)
         self.vehicle_type = "Motorcycle"
-        self.fuel_efficiency = fuel_efficiency
         self.current_fuel = 100
