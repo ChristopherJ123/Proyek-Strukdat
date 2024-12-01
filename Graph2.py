@@ -2,6 +2,7 @@ from heapq import heapify, heappop, heappush
 import math
 
 # sama aja cuma ganti class vehicle nya, plus hitung wktu perjalanan sm konsumsi bb
+#buat test, ganti graph2 di main hehe
 class Graph2:
     def __init__(self):
         self.graph = {}
