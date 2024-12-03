@@ -1,8 +1,9 @@
 from heapq import heapify, heappop, heappush
 import math
 
-
-class Graph:
+# sama aja cuma ganti class vehicle nya, plus hitung wktu perjalanan sm konsumsi bb
+#buat test, ganti graph2 di main hehe
+class Graph2:
     def __init__(self):
         self.graph = {}
 
@@ -23,7 +24,7 @@ class Graph:
         self.graph[vertex1][vertex2].set_distance(math.sqrt(pow(abs(vertex1.x - vertex2.x), 2) + pow(abs(vertex1.y - vertex2.y), 2)))
 
 
-    def shortest_distances(self, source, vehicle):
+    def shortest_distances(self, source, Transportation):
         # Dijkstra Algorithm
         # Initialize the values of all nodes with infinity
         distances = {vertex: float("inf") for vertex in self.graph}
@@ -46,7 +47,7 @@ class Graph:
             for neighbour_vertex, neighbour_path in self.graph[current_vertex].items():
                 # Calculate the distance from current_vertex to the neighbour_vertex
                 # Ini skrg aku tambahin supaya cuma jenis kendaraan tertentu yang bisa lewat jalan tertentu
-                if vehicle.can_traverse(neighbour_path.road_type):
+                if Transportation.can_traverse(neighbour_path.road_type):
                     tentative_distance = current_distance + neighbour_path.distance
                     if tentative_distance < distances[neighbour_vertex]:
                         distances[neighbour_vertex] = tentative_distance
@@ -57,19 +58,21 @@ class Graph:
         for vertex, distance in distances.items():
             for neighbour_vertex, neighbour_path in self.graph[vertex].items():
                 if (distance + neighbour_path.distance == distances[neighbour_vertex]
-                        and distances[neighbour_vertex] != float('inf') and vehicle.can_traverse(neighbour_path.road_type)):
+                        and distances[neighbour_vertex] != float('inf') and Transportation.can_traverse(neighbour_path.road_type)):
                     predecessors[neighbour_vertex] = [vertex, neighbour_path]
 
         return distances, predecessors
 
-    def go_from_a_to_b(self, source, destination, vehicle):
-        distances, predecessors = self.shortest_distances(source, vehicle)
+    def go_from_a_to_b(self, source, destination, Transportation):
+        distances, predecessors = self.shortest_distances(source, Transportation)
         trace = []
         instruction = []
         current_vertex = destination
+        total_distance= 0
 
         while predecessors[current_vertex][1] is not None:
             trace.append(predecessors[current_vertex][1])
+            total_distance += predecessors[current_vertex][1].distance
 
             #Kalau y nya current lebih besar dari tujuan misal A ke C(cek gambar biar paham), kiri(karena reverse)
             if (current_vertex.y > predecessors[current_vertex][0].y):
@@ -89,6 +92,19 @@ class Graph:
         for i in range(len(trace)):
             print(instruction[i] if instruction[i] else None, end = " ")
             print(trace[i].road_name if trace[i] else None)
+        
+        # ini hehe
+        if Transportation.speed <= 0: 
+            print("must greater then zero!")
+        else: 
+            time_taken= total_distance / Transportation.speed
+
+        fuel_consumed= total_distance * Transportation.fuel_efficiency
+
+        print(f"\nTotal jarak: {total_distance} km")
+        print(f"Estimasi waktu perjalanan: {time_taken} jam")
+        print(f"Konsumsi bahan bakar: {fuel_consumed} liter")
+
         return trace
 
     def print_graph(self):
