@@ -145,7 +145,6 @@ for key, value in predesesor.items():
     print(f"{key.name}: {value[0].name if value[0] else None} {value[1].road_name if value[1] else None}")
 
 #Arah kiri kanannya masih blm bener
-print()
 print("Pergi dari A ke C:")
 graf.go_from_a_to_b(a, c, car)
 print()
