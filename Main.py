@@ -109,3 +109,45 @@ gr.go_from_a_to_b(A, I, motor)
 # Now:
 # {<Vertex.Vertex object at 0x000001C1026E2450>: 0, <Vertex.Vertex object at 0x000001C1026E2090>: 5.0, <Vertex.Vertex object at 0x000001C1026E20D0>: 7.0710678118654755, <Vertex.Vertex object at 0x000001C1042D0910>: 5.0990195135927845, <Vertex.Vertex object at 0x000001C1042D0950>: 13.81379615571165, <Vertex.Vertex object at 0x000001C1042D0B10>: 10.071067811865476, <Vertex.Vertex object at 0x000001C1042D0B50>: 10.099019513592784, <Vertex.Vertex object at 0x000001C1042D0B90>: 9.34166020071207}
 # {<Vertex.Vertex object at 0x000001C1026E2450>: None, <Vertex.Vertex object at 0x000001C1026E2090>: <Vertex.Vertex object at 0x000001C1026E2450>, <Vertex.Vertex object at 0x000001C1026E20D0>: <Vertex.Vertex object at 0x000001C1026E2450>, <Vertex.Vertex object at 0x000001C1042D0910>: <Vertex.Vertex object at 0x000001C1026E2450>, <Vertex.Vertex object at 0x000001C1042D0950>: <Vertex.Vertex object at 0x000001C1042D0B90>, <Vertex.Vertex object at 0x000001C1042D0B10>: <Vertex.Vertex object at 0x000001C1026E20D0>, <Vertex.Vertex object at 0x000001C1042D0B50>: <Vertex.Vertex object at 0x000001C1042D0910>, <Vertex.Vertex object at 0x000001C1042D0B90>: <Vertex.Vertex object at 0x000001C1042D0910>}
+
+#coba coba:
+print()
+print("coba coba")
+
+graf = Graph()
+a = Vertex(0, 0, "a")
+b = Vertex(0, 5, "b")
+c = Vertex(-10, 5, "c")
+d = Vertex(10, 5, "d")
+
+pathab = Path("Jl. Alfa Bravo", 1, True, 0.0)
+pathbc = Path("Jl. Alfa Charlie", 1, True, 0.0)
+pathbd = Path("Jl. Alfa Delta", 1, True, 0.0)
+
+graphh = {
+    a : {b : pathab},
+    b : {a : pathab, c : pathbc, d : pathbd},
+    c : {b : pathbc},
+    d : {b : pathbd},
+}
+graf.make_graph(graphh)
+jarak, predesesor = graf.shortest_distances(a, car)
+
+print("===DISTANCES===")
+for key, value in jarak.items():
+    print(f"{key.name}: {value} KM")
+
+
+
+print("===PREDECESSOR===")
+
+for key, value in predesesor.items():
+    print(f"{key.name}: {value[0].name if value[0] else None} {value[1].road_name if value[1] else None}")
+
+#Arah kiri kanannya masih blm bener
+print()
+print("Pergi dari A ke C:")
+graf.go_from_a_to_b(a, c, car)
+print()
+print("Pergi dari A ke D:")
+graf.go_from_a_to_b(a, d, car)
