@@ -62,34 +62,87 @@ class Graph:
 
         return distances, predecessors
 
+    def getNextDirection(self, startDest, middleDest, endDest):
+
+        if (startDest.x == middleDest.x): #Jika Path Sebelumnya No Gradient (Jalan sebelumnya lurus)
+            if (startDest.y > middleDest.y): #POV Top To Bottom
+                if (middleDest.x > endDest.x): return "Belok Kanan Ke"
+                elif (middleDest.x < endDest.x): return "Belok Kiri Ke"
+
+            elif (startDest.y < middleDest.y): #POV Bottom To Top
+                if (middleDest.x > endDest.x): return "Belok Kiri Ke"
+                elif (middleDest.x < endDest.x): return "Belok Kanan Ke"
+
+            else: return "Lurus Ke" #POV Straight
+
+        elif (startDest.y == middleDest.y): #Jika Path Sebelumnya Zero Gradient (Jalan sebelumnya lurus)
+            if (startDest.x < middleDest.x): #POV Right To Left
+                if (middleDest.y > endDest.y): return "Belok Kanan Ke"
+                elif (middleDest.y < endDest.y): return "Belok Kiri Ke"
+
+            elif (startDest.x > middleDest.x): #POV Left To Right
+                if (middleDest.y > endDest.y): return "Belok Kanan Ke"
+                elif (middleDest.y < endDest.y): return "Belok Kiri Ke"
+
+            else: return "Lurus Ke" #POV Straight
+
+        else: #Jika Kedua Path Memiliki Gradien(Belok dan Belok atau bisa jadi juga Belok dan Lurus)
+            gradientPrev = (middleDest.y - startDest.y) / (middleDest.x - startDest.x)
+
+            try: #Cek jika lurusnya ke atas / bawah (No Gradient)
+                gradientCurrent = (endDest.y - middleDest.y) / (endDest.x - middleDest.x)
+            except:
+                #Akan Turun atau Naik
+                if (middleDest.y > endDest.y): return "Belok Kanan Ke"
+                elif (middleDest.y < endDest.y): return "Belok Kiri Ke"
+            else:
+                if gradientPrev > gradientCurrent:
+                    if gradientCurrent == 0 and middleDest.x > endDest.x: #Jika dari kanan(kanan turun) terus mau next jalannya lurus sebelah kiri
+                        return "Belok Kiri Ke"
+                    elif gradientCurrent == 0 and middleDest.x < endDest.x: #Jika dari kanan(kanan turun) terus mau next jalannya lurus sebelah kanan
+                        return "Belok Kanan Ke"
+                    else:return "Belok Kanan Ke" #Kanan terus kanan
+                elif gradientPrev < gradientCurrent: 
+                    if gradientCurrent == 0 and middleDest.x > endDest.x: #Jika dari kiri terus next(kiri naik) jalannya lurus sebelah kanan
+                        return "Belok Kanan Ke"
+                    elif gradientCurrent == 0 and middleDest.x < endDest.x: #Jika dari kiri terus next(kiri naik) jalannya lurus sebelah kiri
+                        return "Belok Kiri Ke"
+                    else:return "Belok Kiri Ke" #Kiri Kiri / Kanan Kiri
+                else: return "Lurus Ke" #Lurus Lurus
+
+    def getFirstDirection(self, startDest, endDest):
+        if (startDest.x == endDest.x or startDest.y == endDest.y): return "Lurus Ke"
+        elif (startDest.y > endDest.y): return "Belok Kanan Ke"
+        elif (startDest.y < endDest.y): return "Belok Kiri Ke"
+        
+
     def go_from_a_to_b(self, source, destination, vehicle):
         distances, predecessors = self.shortest_distances(source, vehicle)
         trace = []
-        instruction = []
         current_vertex = destination
 
         while predecessors[current_vertex][1] is not None:
-            trace.append(predecessors[current_vertex][1])
-
-            #Kalau y nya current lebih besar dari tujuan misal A ke C(cek gambar biar paham), kiri(karena reverse)
-            if (current_vertex.y > predecessors[current_vertex][0].y):
-                instruction.append("Belok Kiri Ke")
-            #Kalau y nya current lebih kecil dari tujuan misal C ke A(cek gambar biar paham), kanan(karena reverse)
-            elif (current_vertex.y < predecessors[current_vertex][0].y):
-                instruction.append("Belok Kanan Ke")
-            #Kalau salah 1 sama berarti lurus aja
-            elif (current_vertex.x == predecessors[current_vertex][0].x or current_vertex.y == predecessors[current_vertex][0].y):
-                instruction.append("Lurus Ke")
-
-
+            trace.append(predecessors[current_vertex])
             current_vertex = predecessors[current_vertex][0]
+        
         trace.reverse()
-        instruction.reverse()
 
         for i in range(len(trace)):
-            print(instruction[i] if instruction[i] else None, end = " ")
-            print(trace[i].road_name if trace[i] else None)
-        return trace
+            if (i > 0):
+                if (i+1 == len(trace)):
+                    print(self.getNextDirection(trace[i - 1][0], trace[i][0], destination), end = " ")
+                elif (i+1 < len(trace)): 
+                    print(self.getNextDirection(trace[i - 1][0], trace[i][0], trace[i+1][0]), end = " ")
+
+            else:
+                if (i+1 == len(trace)):
+                    print(self.getFirstDirection(trace[i][0], destination), end = " ")
+                else:
+                    print(self.getFirstDirection(trace[i][0], trace[i+1][0]), end = " ")
+
+            # print(instruction[i] if instruction[i] else None, end = " ")
+            print(trace[i][1].road_name if trace[i][1] else None)
+
 
     def print_graph(self):
         for start, end in self.graph.items():
