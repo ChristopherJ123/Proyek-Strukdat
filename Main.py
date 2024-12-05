@@ -150,3 +150,100 @@ graf.go_from_a_to_b(a, c, car)
 print()
 print("Pergi dari A ke D:")
 graf.go_from_a_to_b(a, d, car)
+
+
+def print_mainPage():
+    print("\n================== Main Page ==================")
+    print("Choices : ")
+    print("1. Edit map")
+    print("2. Search for shortest distance")
+    print("3. Display map")
+    print("0. Exit")
+
+def print_mapPage():
+    print("\n=============== Map Editor Page ===============")
+    print("Choices : ")
+    print("1. Add new location") 
+    print("2. Delete existing location")
+    print("3. Add new road")
+    print("4. Update road information")
+    print("0. Exit")
+    print("-1. Back to the main page")
+
+def createPath():
+    road_name = input("\nWhat is the name of the road? ")
+    print("Tipe dari jalan: \n'1 : Jalan biasa', '2 : Jalan Tol', '3 : Jalan sempit/gang', '4 : Jalan pejalan kaki'.")
+    road_type = int(input("Input road type: "))
+    print("Kondisi dari jalan: 'True : Bagus', 'False : Buruk'.")
+    road_condition = bool(input("Input road condition: "))
+    print("Tingkat kemacetan antara range 0.0 (Sangat lancar) - 1.0 (Macet Total)")
+    road_congestion = float(input("Input road congestion rate: "))
+    return Path(road_name, road_type, road_condition, road_congestion)
+
+
+choice = 1
+while choice!=0:
+    print_mainPage()
+    choice = int(input("Please enter your choice here: "))
+
+    if choice == 1 :
+        while choice == 1 :
+            print_mapPage()
+            input2 = int(input("Please enter your choice here: "))
+            if input2 == 1:
+                print("\nTo add a new location, please input the following details.")
+                vertex_name = input("Location name: ")
+                x = int(input("X-coordinates of the location: "))
+                y = int(input("Y-coordinates of the location: "))
+
+                vertex_new = Vertex(x, y, vertex_name) 
+                gr.add_vertex(vertex_new)
+
+            elif input2 == 2:
+                print("\nTo delete an existing location, please input the following details.")
+                vertex_name = input("Location name: ")
+                gr.delete_vertex(vertex_name)
+
+            elif input2 == 3:
+                print("\nTo create a new path, please input the following details.")
+                start = input("Where is the starting point of the path? ")
+                end = input("To where does the path lead to? ")
+                pathXX = createPath()
+
+                gr.add_edge(start, end, pathXX)
+
+            elif input2 == 4:
+                print("\nTo update road information, please input the following details.")
+                road_name = input("What is the name of the road? ")
+                print("Of the following details, which one would you like to change?\n1. Road Name\n2. Road Type\n3. Road Condition\n4. Road Congestion Rate")
+                road_update = int(input("Please enter your choice here (You may only choose one):  "))
+
+                gr.edit_path(road_name, road_update)
+
+            elif input2 == 0:
+                choice = 0
+                print("\nExiting...")
+                break
+            elif input2 == -1:
+                choice = -1
+                print("\nGoing back into the main page...")
+            else :
+                print("Input outside of choices. Please try again.")
+
+
+    elif choice == 2:
+        start = input("\nWhere do you want to start your journey? ")
+        end = input("Where do you want to go? ")
+
+    elif choice == 3:
+        print("\nHere is the current map: ")
+        gr.print_graph()
+
+    elif choice == 0:
+        choice = 0
+        print("\nExiting...")
+        break
+    else :
+        print("Input outside of choices. Please try again.")
+    
+
