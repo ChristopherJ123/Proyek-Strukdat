@@ -86,7 +86,6 @@ graph = {
     islamic_centre: {persimpangan_mayjenSungkono_rayaDukuhKupang : raya_dukuh_kupang, persimpangan_girilaya_diponegoro : girilaya},
     ciputra_world: {shangrila_hotel : mayjen_sungkono, rumah_sakit_mayapada : mayjen_sungkono},
     rumah_sakit_mayapada: {ciputra_world : mayjen_sungkono, persimpangan_adityawarman_indragiri : adityawarman},
-
     persimpangan_adityawarman_indragiri: {rumah_sakit_mayapada : adityawarman, persimpangan_adityawarman_ciliwung : adityawarman, gor_pancasila : indragiri},
     persimpangan_girilaya_diponegoro: {islamic_centre : girilaya, persimpangan_indragiri_diponegoro : diponegoro},
     persimpangan_indragiri_diponegoro: {persimpangan_girilaya_diponegoro : diponegoro, persimpangan_DRSoetomo_rayaDarmo : drSoetomo, gor_pancasila : indragiri},
