@@ -15,12 +15,71 @@ class Graph:
                     self.graph[start][end] = graph[start][end]
                 self.graph[start][end].set_distance(math.sqrt(pow(abs(start.x - end.x), 2) + pow(abs(start.y - end.y), 2)))
 
+    def add_vertex(self, vertex):
+        self.graph[vertex] = {}
+        print("New location added successfully.")
 
-    def add_edge(self, vertex1, vertex2, edge):
+    def delete_vertex(self, vertex_name):
+        vertex_to_delete = self.find_vertex(vertex_name)
+
+        if vertex_to_delete is None:
+            print(f"Location '{vertex_name}' not found.")
+            return  
+        if vertex_to_delete in self.graph:
+            del self.graph[vertex_to_delete]
+            # print(f"Deleted vertex: {vertex_to_delete.name}")
+        for start, adjacencies in list(self.graph.items()):  
+            if vertex_to_delete in adjacencies:
+                del adjacencies[vertex_to_delete]
+                # print(f"Removed edge from {start.name} to {vertex_to_delete.name}")
+        print("\nLocation deleted successfully.")
+
+    def find_vertex(self, vertex_name):
+        for vertex in self.graph:
+            if (vertex.name == vertex_name):
+                # print("Found vertex.")
+                return vertex
+        # print("Vertex not found.")
+        return None
+    
+    def add_edge(self, vertex1_name, vertex2_name, edge):
+        vertex1 = self.find_vertex(vertex1_name)
+        vertex2 = self.find_vertex(vertex2_name)
+
+        if not vertex1 or not vertex2:
+            raise ValueError(f"One or both location '{vertex1_name}' and '{vertex2_name}' not found in the graph!")
+        
         if vertex1 not in self.graph:
             self.graph[vertex1] = {}
-        self.graph[vertex1][vertex2] =  edge
+        self.graph[vertex1][vertex2] = edge
+    
         self.graph[vertex1][vertex2].set_distance(math.sqrt(pow(abs(vertex1.x - vertex2.x), 2) + pow(abs(vertex1.y - vertex2.y), 2)))
+        print("\nNew path added successfully.")
+
+    def edit_path(self, roadName, change):
+        for start, end in self.graph.items():
+            for key, value in end.items():
+                if value.road_name == roadName:
+                    if change == 1:
+                       value.road_name = input("Please enter the correct road name: ") 
+                       print("\nRoad information updated successfully.")
+                    elif change == 2:
+                        print("Tipe dari jalan: \n'1 : Jalan biasa', '2 : Jalan Tol', '3 : Jalan sempit/gang', '4 : Jalan pejalan kaki'.")
+                        value.road_type = int(input("Please enter the correct road type: "))
+                        print("\nRoad information updated successfully.")
+                    elif change == 3:
+                        print("Kondisi dari jalan: 'True : Bagus', 'False : Buruk'.")
+                        value.road_condition = bool(input("Please enter the correct road condition information:"))
+                        print("\nRoad information updated successfully.")
+                    elif change == 4:
+                        print("Tingkat kemacetan antara range 0.0 (Sangat lancar) - 1.0 (Macet Total)")
+                        value.road_congestion = float(input("Please enter the correct road congestion rate:"))
+                        print("\nRoad information updated successfully.")
+                    else :
+                        print("Input outside of choices. Please try again.")
+                    return
+                    
+        print("Sorry, we don't seem to have a road with that name.")
 
 
     def shortest_distances(self, source, vehicle):
