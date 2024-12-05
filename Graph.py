@@ -101,7 +101,7 @@ class Graph:
                         return "Belok Kiri Ke"
                     elif gradientCurrent == 0 and middleDest.x < endDest.x: #Jika dari kanan(kanan turun) terus mau next jalannya lurus sebelah kanan
                         return "Belok Kanan Ke"
-                    else:return "Belok Kanan Ke" #Kanan terus kanan
+                    else:return "Belok Kanan Ke" #Kanan Kanan / Kiri Kanan
                 elif gradientPrev < gradientCurrent: 
                     if gradientCurrent == 0 and middleDest.x > endDest.x: #Jika dari kiri terus next(kiri naik) jalannya lurus sebelah kanan
                         return "Belok Kanan Ke"
