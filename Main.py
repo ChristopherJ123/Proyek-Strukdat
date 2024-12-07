@@ -234,6 +234,8 @@ while choice!=0:
     elif choice == 2:
         start = input("\nWhere do you want to start your journey? ")
         end = input("Where do you want to go? ")
+        gr.go_from_a_to_b(start, end, car)
+
 
     elif choice == 3:
         print("\nHere is the current map: ")

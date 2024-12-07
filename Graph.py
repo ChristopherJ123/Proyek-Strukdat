@@ -176,6 +176,18 @@ class Graph:
         
 
     def go_from_a_to_b(self, source, destination, vehicle):
+        if type(source) == str and type(destination) == str: # Cek source & destination apakah ada di graph
+            sourceKetemu = False; destinationKetemu = False
+            for vertex in self.graph:
+                if not sourceKetemu and vertex.name.lower() == source.lower():
+                    source = vertex
+                    sourceKetemu = True
+                if not destinationKetemu and vertex.name.lower() == destination.lower():
+                    destination = vertex
+                    destinationKetemu = True
+            if not sourceKetemu or not destinationKetemu:
+                if not sourceKetemu: print("Source tidak ditemukan!")
+                if not destinationKetemu: print("Destination tidak ditemukan!")
         distances, predecessors = self.shortest_distances(source, vehicle)
         trace = []
         current_vertex = destination
