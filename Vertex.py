@@ -1,5 +1,12 @@
 class Vertex:
+
     def __init__(self, x, y, name):
+        """
+        Membuat Vertex baru
+        :param x: Kordinat X
+        :param y: Kordinat Y
+        :param name: Nama Vertex
+        """
         self.x = x
         self.y = y
         self.name = name
