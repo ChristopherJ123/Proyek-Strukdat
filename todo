@@ -3,11 +3,11 @@ Fitur done:
 - edge menggunakan class Path
 - dijkstra algorithm sederhana
 - class Transportation, Car, Motorcycle, Walking (Marco)
+- class Bicycle, Bus - Jess
+- jalan(edge) khusus car, motorcycle, atau walking - Marco (Semoga udah gk ada bug lagi hehe)
+- Instruksi Arah Total - Chris, Eve
 
 Todo:
-1. print belok kanan, belok kiri, atau jalan lurus terus di print_graph() - Chris
-2. jalan(edge) khusus car, motorcycle, atau walking - Marco
-3. implementasi class transportation beserta child class" nya - Jessica
 4. weight tiap edge(jalan) final (waktu final) yang sudah dihitung dari distance dengan kemacetan,
 kecepatan vehicle, bensin, dll. Bisa dibilang weight edge final = waktu final melewati edge tersebut.
 (Jarak * kecepatan vehicle * kemacetan * kondisi jalan = waktu final)

@@ -112,12 +112,13 @@ class Graph:
                         heappush(pq, (tentative_distance, neighbour_vertex))
 
         # Melihat Jalur awalnya
-        predecessors = {vertex: [None, None] for vertex in self.graph}
+        predecessors = {vertex: {'vertex_asal' : None, 'path' : None} for vertex in self.graph}
         for vertex, distance in distances.items():
             for neighbour_vertex, neighbour_path in self.graph[vertex].items():
                 if (distance + neighbour_path.distance == distances[neighbour_vertex]
                         and distances[neighbour_vertex] != float('inf') and vehicle.can_traverse(neighbour_path.road_type)):
-                    predecessors[neighbour_vertex] = [vertex, neighbour_path]
+                    predecessors[neighbour_vertex]['vertex_asal'] = vertex
+                    predecessors[neighbour_vertex]['path'] = neighbour_path
 
         return distances, predecessors
 
@@ -191,28 +192,43 @@ class Graph:
         distances, predecessors = self.shortest_distances(source, vehicle)
         trace = []
         current_vertex = destination
+        total_distance = 0
 
-        while predecessors[current_vertex][1] is not None:
+        while predecessors[current_vertex]['path'] is not None:
+            # print(
+            #     f"{predecessors[current_vertex][1]} {predecessors[current_vertex][1].road_name} {predecessors[current_vertex][1].distance}")
+            total_distance += predecessors[current_vertex]['path'].distance
             trace.append(predecessors[current_vertex])
-            current_vertex = predecessors[current_vertex][0]
+            current_vertex = predecessors[current_vertex]['vertex_asal']
         
         trace.reverse()
 
         for i in range(len(trace)):
             if (i > 0):
                 if (i+1 == len(trace)):
-                    print(self.getNextDirection(trace[i - 1][0], trace[i][0], destination), end = " ")
+                    print(self.getNextDirection(trace[i - 1]['vertex_asal'], trace[i]['vertex_asal'], destination), end = " ")
                 elif (i+1 < len(trace)): 
-                    print(self.getNextDirection(trace[i - 1][0], trace[i][0], trace[i+1][0]), end = " ")
+                    print(self.getNextDirection(trace[i - 1]['vertex_asal'], trace[i]['vertex_asal'], trace[i+1]['vertex_asal']), end = " ")
 
             else:
                 if (i+1 == len(trace)):
-                    print(self.getFirstDirection(trace[i][0], destination), end = " ")
+                    print(self.getFirstDirection(trace[i]['vertex_asal'], destination), end = " ")
                 else:
-                    print(self.getFirstDirection(trace[i][0], trace[i+1][0]), end = " ")
+                    print(self.getFirstDirection(trace[i]['vertex_asal'], trace[i+1]['vertex_asal']), end = " ")
 
             # print(instruction[i] if instruction[i] else None, end = " ")
-            print(trace[i][1].road_name if trace[i][1] else None)
+            print(trace[i]['path'].road_name if trace[i]['path'] else None)
+
+        if vehicle.speed <= 0:
+            print("must greater then zero!")
+        else:
+            time_taken = total_distance / vehicle.speed
+
+        fuel_consumed = total_distance * vehicle.fuel_efficiency
+
+        print(f"\nTotal jarak: {total_distance} km")
+        print(f"Estimasi waktu perjalanan: {time_taken} jam")
+        print(f"Konsumsi bahan bakar: {fuel_consumed} liter")
 
 
     def print_graph(self):
