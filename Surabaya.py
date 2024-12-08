@@ -132,15 +132,15 @@ gr.go_from_a_to_b(pakuwon_mall, pcu, car)
 
 #29,34,32 jalan
 
+# Draw the graph
 G = nx.DiGraph()
-for v, e in graph.items():
+for v, e in gr.graph.items():
     G.add_node(v.name, pos=(v.x, v.y))
     for neighbour, path in e.items():
         G.add_edge(v.name, neighbour.name, label=round(path.distance))
 
 positions = nx.get_node_attributes(G, 'pos')
 
-# Draw the graph
 plt.figure(figsize=(20, 16))
 nx.draw(G, positions, with_labels=True, node_size=500, node_color='skyblue', font_weight='bold', font_size=7, arrowsize=20)
 

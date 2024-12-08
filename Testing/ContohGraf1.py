@@ -43,6 +43,7 @@ gr.make_graph(contoh_graph1)
 gr.print_graph()
 gr.go_from_a_to_b('A', 'I', Car(50, 50))
 
+# Draw the graph
 G = nx.DiGraph()
 for v, e in contoh_graph1.items():
     G.add_node(v.name, pos=(v.x, v.y))
@@ -51,7 +52,6 @@ for v, e in contoh_graph1.items():
 
 positions = nx.get_node_attributes(G, 'pos')
 
-# Draw the graph
 plt.figure(figsize=(10, 8))
 nx.draw(G, positions, with_labels=True, node_size=500, node_color='skyblue', font_weight='bold', font_size=10, arrowsize=20)
 
