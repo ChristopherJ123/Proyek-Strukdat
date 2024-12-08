@@ -96,7 +96,7 @@ graph = {
     persimpangan_adityawarman_ciliwung: {persimpangan_adityawarman_indragiri : adityawarman, persimpangan_diponegoro_ciliwung : ciliwung},
     persimpangan_diponegoro_ciliwung: {kebun_binatang_surabaya : diponegoro, persimpangan_adityawarman_ciliwung : ciliwung},
     kebun_binatang_surabaya: {persimpangan_diponegoro_ciliwung : diponegoro, taman_bungkul : raya_darmo, persimpangan_ahmadYani_wonokromo : wonokromo},
-    taman_bungkul: {persimpangan_DRSoetomo_rayaDarmo : raya_darmo, taman_bungkul : raya_darmo},
+    taman_bungkul: {persimpangan_DRSoetomo_rayaDarmo : raya_darmo, kebun_binatang_surabaya : raya_darmo},
     persimpangan_DRSoetomo_rayaDarmo: {persimpangan_indragiri_diponegoro : drSoetomo, taman_bungkul : raya_darmo, persimpangan_pandegiling_rayaDarmo : raya_darmo},
     persimpangan_pandegiling_rayaDarmo: {persimpangan_DRSoetomo_rayaDarmo : raya_darmo, persimpangan_uripSumoharjo_basukiRahmat : urip_sumoharjo},
     persimpangan_uripSumoharjo_basukiRahmat: {persimpangan_pandegiling_rayaDarmo : urip_sumoharjo, persimpangan_basukiRahmat_embongWungu: basuki_rahmat},
