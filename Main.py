@@ -79,7 +79,7 @@ for key, value in distances.items():
 print("===PREDECESSOR===")
 
 for key, value in predecessor.items():
-    print(f"{key.name}: {value[0].name if value[0] else None} {value[1].road_name if value[1] else None}")
+    print(f"{key.name}: {value['vertex_asal'].name if value['vertex_asal'] else None} {value['path'].road_name if value['path'] else None}")
 
 
 print("Pergi dari A ke F:")
@@ -96,7 +96,7 @@ for key, value in distances2.items():
 print("===PREDECESSOR 2===")
 
 for key, value in predecessor2.items():
-    print(f"{key.name}: {value[0].name if value[0] else None} {value[1].road_name if value[1] else None}")
+    print(f"{key.name}: {value['vertex_asal'].name if value['vertex_asal'] else None} {value['path'].road_name if value['path'] else None}")
 
 print("Pergi dari A ke F 2:")
 gr.go_from_a_to_b(A, I, motor)
@@ -142,7 +142,7 @@ for key, value in jarak.items():
 print("===PREDECESSOR===")
 
 for key, value in predesesor.items():
-    print(f"{key.name}: {value[0].name if value[0] else None} {value[1].road_name if value[1] else None}")
+    print(f"{key.name}: {value['vertex_asal'].name if value['vertex_asal'] else None} {value['path'].road_name if value['path'] else None}")
 
 #Arah kiri kanannya masih blm bener
 print("Pergi dari A ke C:")

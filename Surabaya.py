@@ -119,7 +119,7 @@ print()
 print("===PREDECESSOR===")
 
 for key, value in predecessor.items():
-    print(f"{key.name}: {value[0].name if value[0] else None} {value[1].road_name if value[1] else None}")
+    print(f"{key.name}: {value['vertex_asal'].name if value['vertex_asal'] else None} {value['path'].road_name if value['path'] else None}")
 
 print()
 print("Pergi dari A ke F:")
