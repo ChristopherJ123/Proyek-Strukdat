@@ -37,4 +37,4 @@ contoh_graph1 = {
 gr = Graph()
 gr.make_graph(contoh_graph1)
 gr.print_graph()
-gr.go_from_a_to_b(A, I, Car(50, 50))
+gr.go_from_a_to_b('A', 'I', Car(50, 50))

@@ -210,7 +210,7 @@ while choice!=0:
                 end = input("To where does the path lead to? ")
                 pathXX = createPath()
 
-                graf.add_edge(start, end, pathXX)
+                gr.add_edge(start, end, pathXX)
 
             elif input2 == 4:
                 print("\nTo update road information, please input the following details.")
@@ -234,10 +234,11 @@ while choice!=0:
     elif choice == 2:
         start = input("\nWhere do you want to start your journey? ")
         end = input("Where do you want to go? ")
+        gr.go_from_a_to_b(start, end, car)
 
     elif choice == 3:
         print("\nHere is the current map: ")
-        graf.print_graph()
+        gr.print_graph()
 
     elif choice == 0:
         choice = 0
