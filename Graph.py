@@ -224,13 +224,11 @@ class Graph:
 
             # print(instruction[i] if instruction[i] else None, end = " ")
             print(trace[i]['path'].road_name if trace[i]['path'] else None)
-            if (i + 1 == len(trace)):
-                jarak = round(math.sqrt(math.pow((destination.y - trace[i]['vertex_asal'].y), 2) + math.pow((destination.x - trace[i]['vertex_asal'].x), 2)))
-                print("Ikuti jalan sejauh", str(jarak) + " M" if jarak < 1000 else str(jarak/1000) + " KM")
-                print("\nAnda Telah Tiba Di Tujuan Anda!")
-            elif (i + 1 < len(trace)):
-                jarak = round(math.sqrt(math.pow((trace[i+1]['vertex_asal'].y - trace[i]['vertex_asal'].y), 2) + math.pow((destination.x - trace[i+1]['vertex_asal'].x), 2)))
-                print("Ikuti jalan sejauh", str(jarak) + " M" if jarak < 1000 else str(jarak/1000) + " KM")
+
+            # Hitung jarak per jalan
+            jarak = round(trace[i]['path'].distance)
+            print("Ikuti jalan sejauh", str(jarak) + " M" if jarak < 1000 else str(jarak) + " KM")
+        print("\nAnda Telah Tiba Di Tujuan Anda!")
 
         if vehicle.speed <= 0:
             print("must greater then zero!")
