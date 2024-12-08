@@ -43,21 +43,21 @@ gr.make_graph(contoh_graph1)
 gr.print_graph()
 gr.go_from_a_to_b('A', 'I', Car(50, 50))
 
-# Draw the graph
-G = nx.DiGraph()
-for v, e in contoh_graph1.items():
-    G.add_node(v.name, pos=(v.x, v.y))
-    for neighbour, path in e.items():
-        G.add_edge(v.name, neighbour.name, label=path.distance)
-
-positions = nx.get_node_attributes(G, 'pos')
-
-plt.figure(figsize=(10, 8))
-nx.draw(G, positions, with_labels=True, node_size=500, node_color='skyblue', font_weight='bold', font_size=10, arrowsize=20)
-
-# Draw edge labels
-edge_labels = nx.get_edge_attributes(G, 'label')
-nx.draw_networkx_edge_labels(G, positions, edge_labels=edge_labels, font_size=8)
-
-plt.title("Graph Visualization", fontsize=14)
-plt.show()
+# # Draw the graph
+# G = nx.DiGraph()
+# for v, e in contoh_graph1.items():
+#     G.add_node(v.name, pos=(v.x, v.y))
+#     for neighbour, path in e.items():
+#         G.add_edge(v.name, neighbour.name, label=path.distance)
+#
+# positions = nx.get_node_attributes(G, 'pos')
+#
+# plt.figure(figsize=(10, 8))
+# nx.draw(G, positions, with_labels=True, node_size=500, node_color='skyblue', font_weight='bold', font_size=10, arrowsize=20)
+#
+# # Draw edge labels
+# edge_labels = nx.get_edge_attributes(G, 'label')
+# nx.draw_networkx_edge_labels(G, positions, edge_labels=edge_labels, font_size=8)
+#
+# plt.title("Graph Visualization", fontsize=14)
+# plt.show()
