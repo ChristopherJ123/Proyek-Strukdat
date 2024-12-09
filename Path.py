@@ -23,9 +23,9 @@ class Path:
         else:
             speed_modifier = 1.0
 
-        effective_speed = base_speed * speed_modifier
+        effective_speed = max(base_speed * speed_modifier * (1 - self.congestion), 0.1)
 
-        effective_speed *= (1 - self.congestion)
+       # effective_speed *= (1 - self.congestion)
 
         if effective_speed <= 0:
             raise ValueError("Effective speed too low to calculate travel time.")

@@ -1,5 +1,7 @@
 from heapq import heapify, heappop, heappush
 import math
+from datetime import datetime, timedelta
+from Transportation import Transportation
 
 
 class Graph:
@@ -80,13 +82,39 @@ class Graph:
                     return
                     
         print("Sorry, we don't seem to have a road with that name.")
+        
+    # hitung final_time edge dgn mempertimbangakn kemacetan, jalan, speed, jam brngkt. 
+    def calculate_edge(self, path, vehicle, curr_time=None):
+        base_time= path.travel_time(vehicle.speed) #waktu dasar dr jarak/kecepatan 
+
+        if curr_time:
+            hour= curr_time.hour
+            # jam 7.00 - 9.00 atau jam 16.00 - 18.00
+            if (7 <= hour <= 9) or (16 <= hour <= 18):
+                path.congestion= min(path.congestion + 0.3, 1.0)  #menambah kemacetan
+            # off hours 22.00 - 05.00
+            elif (22 <= hour <= 23) or (0 <= hour <= 5):
+                path.congestion= max(path.congestion - 0.2, 0.0)  #mengurangi kemacetan
+            else:
+                path.congestion= path.congestion  #normal
+
+         # Menghitung waktu final dengan mempertimbangkan kemacetan dan kondisi jalan      
+        final_time= base_time * (1 + path.congestion)
+
+        if not path.condition: #kalo jalan buruk dikalikan 1.5
+            final_time *= 1.5
+
+        return final_time
 
 
-    def shortest_distances(self, source, vehicle):
+    def shortest_distances(self, source, vehicle, start_time= None):
         # Dijkstra Algorithm
         # Initialize the values of all nodes with infinity
         distances = {vertex: float("inf") for vertex in self.graph}
         distances[source] = 0  # Set the source value to 0
+
+        arrival_times= {vertex: None for vertex in self.graph}
+        arrival_times[source]= start_time if start_time else datetime.now()
 
         # Initialize priority queue
         pq = [(0, source)]
@@ -101,15 +129,24 @@ class Graph:
             if current_vertex in visited:
                 continue
             visited.add(current_vertex)
+            
+            curr_time= arrival_times[current_vertex]
 
             for neighbour_vertex, neighbour_path in self.graph[current_vertex].items():
                 # Calculate the distance from current_vertex to the neighbour_vertex
                 # Ini skrg aku tambahin supaya cuma jenis kendaraan tertentu yang bisa lewat jalan tertentu
                 if vehicle.can_traverse(neighbour_path.road_type):
-                    tentative_distance = current_distance + neighbour_path.distance
-                    if tentative_distance < distances[neighbour_vertex]:
-                        distances[neighbour_vertex] = tentative_distance
-                        heappush(pq, (tentative_distance, neighbour_vertex))
+                  edge_weight= self.calculate_edge(neighbour_path, vehicle, curr_time)
+
+                  tentative_distance = current_distance + neighbour_path.distance
+                  if tentative_distance < distances[neighbour_vertex]:
+                    distances[neighbour_vertex] = tentative_distance
+                    
+                    #hitung  arrival time di neighbour
+                    time_delta= timedelta(hours=edge_weight)
+                    arrival_times[neighbour_vertex]= curr_time + time_delta
+
+                    heappush(pq, (tentative_distance, neighbour_vertex))
 
         # Melihat Jalur awalnya
         predecessors = {vertex: {'vertex_asal' : None, 'path' : None} for vertex in self.graph}
@@ -176,7 +213,7 @@ class Graph:
         elif (startDest.y < endDest.y): return "Belok Kiri Ke"
         
 
-    def go_from_a_to_b(self, source, destination, vehicle):
+    def go_from_a_to_b(self, source, destination, vehicle, start_time= None):
         if type(source) == str and type(destination) == str:  # Cek source & destination apakah ada di graph
             sourceKetemu = False;
             destinationKetemu = False
@@ -190,7 +227,37 @@ class Graph:
             if not sourceKetemu or not destinationKetemu:
                 if not sourceKetemu: print("Source tidak ditemukan!")
                 if not destinationKetemu: print("Destination tidak ditemukan!")
-        distances, predecessors = self.shortest_distances(source, vehicle)
+        distances, predecessors = self.shortest_distances(source, vehicle, start_time)
+
+
+        if (distances[destination] == float('inf')):
+            print(f"no valid path from {source.name} to {destination.name}")
+            return
+        
+        # Hitung waktu kedatangan
+        arrival_times = {}  # Dictionary untuk waktu kedatangan
+        for node, distance in distances.items():
+            if start_time and distance != float('inf'):
+                arrival_times[node] = start_time + timedelta(hours=distance / vehicle.speed)
+        
+        # print start dan estimated time
+        str_start_time= start_time.strftime("%H:%M") if start_time else "now"
+        arrival_time= arrival_times[destination] if destination in arrival_times else None
+        total_time= distances[destination] / vehicle.speed * 60   #dalam menit
+        hours = int(total_time // 60)  # dalam jumlah jam
+        minutes = int(round(total_time % 60))  # Sisa menit dibulatkan ke atas
+        
+        
+        print(f"\nStart time: {str_start_time}")
+        print(f"Estimated arrival time: {arrival_time.strftime('%H:%M') if arrival_time else 'unknown'}")
+        if hours == 0 and minutes == 0 and total_time > 0:
+            minutes = 1
+        if hours > 0:
+            print(f"Total travel time: {hours} hours {minutes} minutes")
+        else:
+            print(f"Total travel time: {minutes} minutes")
+       
+
         trace = []
         current_vertex = destination
         total_distance = 0
@@ -236,9 +303,21 @@ class Graph:
             time_taken = total_distance / vehicle.speed
         fuel_consumed = total_distance * vehicle.fuel_efficiency
 
-        print(f"\nTotal jarak: {total_distance} km")
-        print(f"Estimasi waktu perjalanan: {time_taken} jam")
-        print(f"Konsumsi bahan bakar: {fuel_consumed} liter")
+        if(total_distance >= 1000):
+            print(f"\nTotal jarak: {round(total_distance) / 1000} km")
+        else:
+            print(f"\nTotal jarak: {total_distance} km")
+
+        if (time_taken >= 1):
+             print(f"Estimasi waktu perjalanan: {time_taken} jam")
+        else:
+            minutes= time_taken * 60
+            (f"Estimasi waktu perjalanan: {minutes} menit")
+        
+        if (fuel_consumed >= 1):
+            print(f"Konsumsi bahan bakar: {fuel_consumed:.2f} liter")
+        else:
+            print(f"Konsumsi bahan bakar: {fuel_consumed * 1000:.0f} mL")
 
 
 

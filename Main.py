@@ -4,6 +4,7 @@ from Vertex import Vertex
 from Walking import Walking
 from Car import Car
 from Motorcycle import Motorcycle
+from datetime import datetime
 
 gr = Graph()
 car = Car(50, 10)
@@ -65,6 +66,24 @@ graph = {
 }
 
 gr.make_graph(graph)
+
+# test different start time
+print('\nTESTTTTT PAGIII C ke E')
+morning = datetime.now().replace(hour=8, minute=0)
+print(" Morning - 08:00 ")
+gr.go_from_a_to_b(C, E, motor, morning)
+
+
+print('\nTEST SIANGGG A ke E')
+midday = datetime.now().replace(hour=14, minute=0)
+print(" Mid day - 14:00 ")
+gr.go_from_a_to_b(A, E, car, midday)
+
+# print('\nTEST MALAM')
+#night= datetime.now().replace(hour= 23, minute=15)
+#gr.go_from_a_to_b(A, G, motor, night)
+
+
 # gr.print_graph()
 distances, predecessor = gr.shortest_distances(A, car)
 # print(f"distances: {distances}")
@@ -86,7 +105,8 @@ print("Pergi dari A ke I:")
 gr.go_from_a_to_b(A, I, car)
 
 print()
-distances2, predecessor2 = gr.shortest_distances(A, motor)
+pagi= datetime.now().replace(hour=7, minute= 30)
+distances2, predecessor2 = gr.shortest_distances(A, motor, pagi)
 
 
 print("===DISTANCES 2===")
@@ -99,7 +119,8 @@ for key, value in predecessor2.items():
     print(f"{key.name}: {value['vertex_asal'].name if value['vertex_asal'] else None} {value['path'].road_name if value['path'] else None}")
 
 print("Pergi dari A ke I:")
-gr.go_from_a_to_b(A, I, motor)
+night1= datetime.now().replace(hour= 22, minute=30)
+gr.go_from_a_to_b(A, I, motor, night1)
 
 
 # format
