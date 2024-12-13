@@ -294,7 +294,7 @@ class Graph:
 
             # Hitung jarak per jalan
             jarak = round(trace[i]['path'].distance)
-            print("Ikuti jalan sejauh", str(jarak) + " M" if jarak < 1000 else str(jarak) + " KM")
+            print("Ikuti jalan sejauh", str(jarak*10) + " M" if jarak < 100 else str(jarak/100) + " KM")
         print("\nAnda Telah Tiba Di Tujuan Anda!")
 
         if vehicle.speed <= 0:
