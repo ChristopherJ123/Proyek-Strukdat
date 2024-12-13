@@ -1,5 +1,3 @@
- # Classnya udah tak buat tapi masih belum dipakai lol, bingung cara implementasiinya
-
 class Path:
     def __init__(self, road_name ,road_type, condition, congestion=0.0):
         """
@@ -17,17 +15,10 @@ class Path:
         self.distance = distance
 
     def travel_time(self, base_speed):
+        # Menghitung waktu final dengan mempertimbangkan kemacetan dan kondisi jalan
+        final_time = (self.distance / base_speed) / (1 - self.congestion) if self.congestion <= 1 else 9999
 
-        if not self.condition:
-            speed_modifier = 0.6
-        else:
-            speed_modifier = 1.0
+        if not self.condition:  # kalo jalan buruk dikalikan 1.5
+            final_time *= 1.5
 
-        effective_speed = max(base_speed * speed_modifier * (1 - self.congestion), 0.1)
-
-       # effective_speed *= (1 - self.congestion)
-
-        if effective_speed <= 0:
-            raise ValueError("Effective speed too low to calculate travel time.")
-
-        return self.distance / effective_speed
+        return final_time

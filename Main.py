@@ -1,5 +1,6 @@
 from Graph import Graph
 from Path import Path
+from Timer import Timer
 from Vertex import Vertex
 from Walking import Walking
 from Car import Car
@@ -69,13 +70,13 @@ gr.make_graph(graph)
 
 # test different start time
 print('\nTESTTTTT PAGIII C ke E')
-morning = datetime.now().replace(hour=8, minute=0)
+morning = Timer(9,30,0)
 print(" Morning - 08:00 ")
 gr.go_from_a_to_b(C, E, motor, morning)
 
 
 print('\nTEST SIANGGG A ke E')
-midday = datetime.now().replace(hour=14, minute=0)
+midday = Timer(14,0,0)
 print(" Mid day - 14:00 ")
 gr.go_from_a_to_b(A, E, car, midday)
 
@@ -85,13 +86,13 @@ gr.go_from_a_to_b(A, E, car, midday)
 
 
 # gr.print_graph()
-distances, predecessor = gr.shortest_distances(A, car)
+distances, predecessor = gr.shortest_times(A, car)
 # print(f"distances: {distances}")
 # print(f"predecessor: {predecessor}")
 
 print("===DISTANCES===")
 for key, value in distances.items():
-    print(f"{key.name}: {value}", end = " M\n" if value < 1000 else " KM\n")
+    print(f"{key.name}: [{value['jarak']}, {value['waktu']}]", end = " M\n" if value['jarak'] < 1000 else " KM\n")
 
 
 
@@ -105,13 +106,13 @@ print("Pergi dari A ke I:")
 gr.go_from_a_to_b(A, I, car)
 
 print()
-pagi= datetime.now().replace(hour=7, minute= 30)
-distances2, predecessor2 = gr.shortest_distances(A, motor, pagi)
+pagi= Timer(7,30,0)
+distances2, predecessor2 = gr.shortest_times(A, motor, pagi)
 
 
 print("===DISTANCES 2===")
 for key, value in distances2.items():
-    print(f"{key.name}: {value}", end = " M\n" if value < 1000 else " KM\n")
+    print(f"{key.name}: [{value['jarak']}, {value['waktu']}]", end = " M\n" if value['jarak'] < 1000 else " KM\n")
 
 print("===PREDECESSOR 2===")
 
@@ -119,7 +120,7 @@ for key, value in predecessor2.items():
     print(f"{key.name}: {value['vertex_asal'].name if value['vertex_asal'] else None} {value['path'].road_name if value['path'] else None}")
 
 print("Pergi dari A ke I:")
-night1= datetime.now().replace(hour= 22, minute=30)
+night1= Timer(22,30,0)
 gr.go_from_a_to_b(A, I, motor, night1)
 
 
@@ -152,11 +153,11 @@ graphh = {
     d : {b : pathbd},
 }
 graf.make_graph(graphh)
-jarak, predesesor = graf.shortest_distances(a, car)
+jarak, predesesor = graf.shortest_times(a, car)
 
 print("===DISTANCES===")
 for key, value in jarak.items():
-    print(f"{key.name}: {value}", end = " M\n" if value < 1000 else " KM\n")
+    print(f"{key.name}: [{value['jarak']}, {value['waktu']}]", end = " M\n" if value['jarak'] < 1000 else " KM\n")
 
 
 
@@ -337,7 +338,7 @@ graph = {
 
 gr.make_graph(graph)
 # gr.print_graph()
-distances, predecessor = gr.shortest_distances(A, car)
+distances, predecessor = gr.shortest_times(A, car)
 # print(f"distances: {distances}")
 # print(f"predecessor: {predecessor}")
 
@@ -357,7 +358,7 @@ print("Pergi dari A ke I:")
 gr.go_from_a_to_b(A, I, car)
 
 print()
-distances2, predecessor2 = gr.shortest_distances(A, motor)
+distances2, predecessor2 = gr.shortest_times(A, motor)
 
 
 print("===DISTANCES 2===")
@@ -402,7 +403,7 @@ graphh = {
     d : {b : pathbd},
 }
 graf.make_graph(graphh)
-jarak, predesesor = graf.shortest_distances(a, car)
+jarak, predesesor = graf.shortest_times(a, car)
 
 print("===DISTANCES===")
 for key, value in jarak.items():

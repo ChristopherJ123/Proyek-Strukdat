@@ -114,7 +114,7 @@ graph = {
 }
 
 gr.make_graph(graph)
-distances, predecessor = gr.shortest_distances(gerbang_tol_satelit, motor)
+distances, predecessor = gr.shortest_times(gerbang_tol_satelit, motor)
 print("===DISTANCES===")
 for key, value in distances.items():
     print(f"{key.name}: {value*10} M")

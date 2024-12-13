@@ -39,6 +39,9 @@ contoh_graph1 = {
 
 gr = Graph()
 gr.make_graph(contoh_graph1)
+# print(pathAB.travel_time(5))
+# distances , predecessors = gr.shortest_distances(A, Car(50, 50))
+
 gr.print_graph()
 gr.go_from_a_to_b('A', 'I', Car(50, 50))
 

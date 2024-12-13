@@ -1,8 +1,12 @@
 from datetime import timedelta
 
 class Timer:
-    def __init__(self):
+    def __init__(self, hours = 0, minutes = 0, seconds = 0):
         self.duration = timedelta()
+        if hours == float('inf') or minutes == float('inf') or seconds == float('inf'):
+            self.duration += timedelta(hours=9999)
+        else:
+            self.duration += timedelta(hours=hours, minutes=minutes, seconds=seconds)
 
     def add_seconds(self, seconds):
         self.duration += timedelta(seconds=seconds)
@@ -17,12 +21,22 @@ class Timer:
         total_seconds = int(self.duration.total_seconds())
         hours, remainder = divmod(total_seconds, 3600)
         minutes, seconds = divmod(remainder, 60)
+        return hours, minutes, seconds
+
+    def get_time_formatted(self):
+        total_seconds = int(self.duration.total_seconds())
+        hours, remainder = divmod(total_seconds, 3600)
+        minutes, seconds = divmod(remainder, 60)
         return f"{hours:02}:{minutes:02}:{seconds:02}"
 
-# Example usage
-timer = Timer()
-timer.add_seconds(45)
-timer.add_minutes(5)
-timer.add_hours(1)
+    def get_seconds(self):
+        """Returns the total duration in seconds as a float."""
+        return self.duration.total_seconds()
 
-print("Timer duration:", timer.get_time(), "Ini dihapus dulu kalau mau di import")  # Outputs: Timer duration: 01:05:45
+    def get_minutes(self):
+        """Returns the total duration in minutes as a float."""
+        return self.duration.total_seconds() / 60
+
+    def get_hours(self):
+        """Returns the total duration in hours as a float."""
+        return self.duration.total_seconds() / 3600

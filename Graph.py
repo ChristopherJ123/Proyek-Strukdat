@@ -1,6 +1,8 @@
 from heapq import heapify, heappop, heappush
 import math
 from datetime import datetime, timedelta
+
+from Timer import Timer
 from Transportation import Transportation
 
 
@@ -84,22 +86,22 @@ class Graph:
         print("Sorry, we don't seem to have a road with that name.")
         
     # hitung final_time edge dgn mempertimbangakn kemacetan, jalan, speed, jam brngkt. 
-    def calculate_edge(self, path, vehicle, curr_time=None):
+    def calculate_edge(self, path, vehicle, curr_time=Timer()):
         base_time= path.travel_time(vehicle.speed) #waktu dasar dr jarak/kecepatan 
 
         if curr_time:
-            hour= curr_time.hour
+            hour, minute, second = curr_time.get_time()
             # jam 7.00 - 9.00 atau jam 16.00 - 18.00
             if (7 <= hour <= 9) or (16 <= hour <= 18):
-                path.congestion= min(path.congestion + 0.3, 1.0)  #menambah kemacetan
+                path.congestion= min(path.congestion + (1 - path.congestion) * 0.3, 1.0)  #menambah kemacetan
             # off hours 22.00 - 05.00
             elif (22 <= hour <= 23) or (0 <= hour <= 5):
-                path.congestion= max(path.congestion - 0.2, 0.0)  #mengurangi kemacetan
+                path.congestion= max(path.congestion - path.congestion * 0.2, 0.0)  #mengurangi kemacetan
             else:
                 path.congestion= path.congestion  #normal
 
          # Menghitung waktu final dengan mempertimbangkan kemacetan dan kondisi jalan      
-        final_time= base_time * (1 + path.congestion)
+        final_time = base_time / (1 - path.congestion) if path.congestion != 1 else 9999
 
         if not path.condition: #kalo jalan buruk dikalikan 1.5
             final_time *= 1.5
@@ -107,53 +109,50 @@ class Graph:
         return final_time
 
 
-    def shortest_distances(self, source, vehicle, start_time= None):
+    def shortest_times(self, source, vehicle, start_time = Timer()):
         # Dijkstra Algorithm
         # Initialize the values of all nodes with infinity
-        distances = {vertex: float("inf") for vertex in self.graph}
-        distances[source] = 0  # Set the source value to 0
-
-        arrival_times= {vertex: None for vertex in self.graph}
-        arrival_times[source]= start_time if start_time else datetime.now()
+        distances = {vertex: {'jarak' : float("inf"), 'waktu' : float("inf")} for vertex in self.graph}
+        distances[source]['jarak'] = 0  # Set the source value to 0
+        distances[source]['waktu'] = start_time.get_hours()
 
         # Initialize priority queue
-        pq = [(0, source)]
+        pq = [(0, 0, source)] # [(time satuan jam, distance satuan km, vertex)] priority queue nya berdasarkan time terkecil.
         heapify(pq)
 
         # Set to hold visited nodes
         visited = set()
 
         while pq:
-            current_distance, current_vertex = heappop(pq)
+            current_time, current_distance, current_vertex = heappop(pq)
 
             if current_vertex in visited:
                 continue
             visited.add(current_vertex)
-            
-            curr_time= arrival_times[current_vertex]
 
             for neighbour_vertex, neighbour_path in self.graph[current_vertex].items():
                 # Calculate the distance from current_vertex to the neighbour_vertex
                 # Ini skrg aku tambahin supaya cuma jenis kendaraan tertentu yang bisa lewat jalan tertentu
                 if vehicle.can_traverse(neighbour_path.road_type):
-                  edge_weight= self.calculate_edge(neighbour_path, vehicle, curr_time)
+                    neighbour_time_weight = neighbour_path.travel_time(vehicle.speed)  # Format: x Jam
+                  # neighbour_time_weight = self.calculate_edge(neighbour_path, vehicle, start_time) # Format: x Jam
 
-                  tentative_distance = current_distance + neighbour_path.distance
-                  if tentative_distance < distances[neighbour_vertex]:
-                    distances[neighbour_vertex] = tentative_distance
-                    
-                    #hitung  arrival time di neighbour
-                    time_delta= timedelta(hours=edge_weight)
-                    arrival_times[neighbour_vertex]= curr_time + time_delta
+                    tentative_distance = current_distance + neighbour_path.distance
+                    tentative_time = current_time + neighbour_time_weight
+                    if tentative_time < distances[neighbour_vertex]['waktu']:
+                        distances[neighbour_vertex]['jarak'] = tentative_distance
 
-                    heappush(pq, (tentative_distance, neighbour_vertex))
+                        #hitung  arrival time di neighbour
+                        distances[neighbour_vertex]['waktu'] = tentative_time
+
+                        heappush(pq, (tentative_time, tentative_distance, neighbour_vertex))
 
         # Melihat Jalur awalnya
         predecessors = {vertex: {'vertex_asal' : None, 'path' : None} for vertex in self.graph}
         for vertex, distance in distances.items():
             for neighbour_vertex, neighbour_path in self.graph[vertex].items():
-                if (distance + neighbour_path.distance == distances[neighbour_vertex]
-                        and distances[neighbour_vertex] != float('inf') and vehicle.can_traverse(neighbour_path.road_type)):
+                if (distance['jarak'] + neighbour_path.distance == distances[neighbour_vertex]['jarak']
+                        and distances[neighbour_vertex]['jarak'] != float('inf') and vehicle.can_traverse(neighbour_path.road_type)):
                     predecessors[neighbour_vertex]['vertex_asal'] = vertex
                     predecessors[neighbour_vertex]['path'] = neighbour_path
 
@@ -213,7 +212,7 @@ class Graph:
         elif (startDest.y < endDest.y): return "Belok Kiri Ke"
         
 
-    def go_from_a_to_b(self, source, destination, vehicle, start_time= None):
+    def go_from_a_to_b(self, source, destination, vehicle, start_time = Timer()):
         if type(source) == str and type(destination) == str:  # Cek source & destination apakah ada di graph
             sourceKetemu = False;
             destinationKetemu = False
@@ -227,8 +226,7 @@ class Graph:
             if not sourceKetemu or not destinationKetemu:
                 if not sourceKetemu: print("Source tidak ditemukan!")
                 if not destinationKetemu: print("Destination tidak ditemukan!")
-        distances, predecessors = self.shortest_distances(source, vehicle, start_time)
-
+        distances, predecessors = self.shortest_times(source, vehicle, start_time)
 
         if (distances[destination] == float('inf')):
             print(f"no valid path from {source.name} to {destination.name}")
@@ -237,20 +235,19 @@ class Graph:
         # Hitung waktu kedatangan
         arrival_times = {}  # Dictionary untuk waktu kedatangan
         for node, distance in distances.items():
-            if start_time and distance != float('inf'):
-                arrival_times[node] = start_time + timedelta(hours=distance / vehicle.speed)
+            if start_time and distance['waktu'] != float('inf'):
+                arrival_times[node] = start_time.get_hours() + distance['waktu']
         
         # print start dan estimated time
-        str_start_time= start_time.strftime("%H:%M") if start_time else "now"
-        arrival_time= arrival_times[destination] if destination in arrival_times else None
-        total_time= distances[destination] / vehicle.speed * 60   #dalam menit
-        hours = int(total_time // 60)  # dalam jumlah jam
-        minutes = int(round(total_time % 60))  # Sisa menit dibulatkan ke atas
+        str_start_time = start_time.get_time_formatted() if start_time else "now"
+        arrival_time = Timer(hours=arrival_times[destination]) if destination in arrival_times else None
+        total_time = Timer(hours=distances[destination]['waktu']) #dalam menit
+        hours, minutes, seconds = total_time.get_time()
         
         
         print(f"\nStart time: {str_start_time}")
-        print(f"Estimated arrival time: {arrival_time.strftime('%H:%M') if arrival_time else 'unknown'}")
-        if hours == 0 and minutes == 0 and total_time > 0:
+        print(f"Estimated arrival time: {arrival_time.get_time_formatted() if arrival_time else 'unknown'}")
+        if hours == 0 and minutes == 0: # Kurang yakin ini fungsinya apa
             minutes = 1
         if hours > 0:
             print(f"Total travel time: {hours} hours {minutes} minutes")
@@ -294,7 +291,7 @@ class Graph:
 
             # Hitung jarak per jalan
             jarak = round(trace[i]['path'].distance)
-            print("Ikuti jalan sejauh", str(jarak*10) + " M" if jarak < 100 else str(jarak/100) + " KM")
+            print("Ikuti jalan sejauh", str(jarak) + " M" if jarak < 1000 else str(jarak/1000) + " KM")
         print("\nAnda Telah Tiba Di Tujuan Anda!")
 
         if vehicle.speed <= 0:
