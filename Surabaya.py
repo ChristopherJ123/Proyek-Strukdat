@@ -55,7 +55,7 @@ raya_darmo_permai = Path("Raya Darmo Permai",1,True,0.0)
 HRMuhammad = Path("HR Muhammad",1,True,0.0)
 mayjen_sungkono = Path("Mayjen Sungkono",1,True,0.0)
 jalan_tol_satelit = Path("Jalan Tol Satelit",1,True,0.0)
-tol_perak_waru = Path("Tol Perak Waru",1,True,0.0)
+tol_perak_waru = Path("Tol Perak Waru",2,True,0.0)
 raya_dukuh_kupang = Path("Raya Dukuh Kupang",1,True,0.0)
 girilaya = Path("Girilaya",1,True,0.0)
 adityawarman = Path("Adityawarman",1,True,0.0)
@@ -113,7 +113,7 @@ graph = {
 }
 
 gr.make_graph(graph)
-distances, predecessor = gr.shortest_distances(pakuwon_mall, car)
+distances, predecessor = gr.shortest_distances(gerbang_tol_satelit, motor)
 print("===DISTANCES===")
 for key, value in distances.items():
     print(f"{key.name}: {value*10} M")
@@ -126,7 +126,7 @@ for key, value in predecessor.items():
 
 print()
 print("Pergi dari A ke F:")
-gr.go_from_a_to_b(pakuwon_mall, pcu, car)
+gr.go_from_a_to_b(gerbang_tol_satelit, exit_tol_waru, motor)
 
 
 
