@@ -1,7 +1,6 @@
 from Car import Car
 from Graph import Graph
 from Path import Path
-from Testing.GPTTest import vertex
 from Vertex import Vertex
 
 import networkx as nx
