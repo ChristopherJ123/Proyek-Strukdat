@@ -72,7 +72,8 @@ panglima_sudirman = Path("Panglima Sudirman",1,True,0.0)
 ahmad_yani = Path("Ahmad Yani",1,True,0.0)
 siwalankerto = Path("Siwalankerto",1,True,0.0)
 raya_geluran = Path("Raya Geluran",1,True,0.0)
-
+gang_1 = Path("Gang 1", 3, True, 0.0)
+gang_2 = Path("Gang 2", 3, True, 0.0)
 
 
 graph = {
@@ -82,7 +83,7 @@ graph = {
     papaya: {persimpangan_HRMuhammad_Jonosewojo : raya_darmo_permai_selatan},
     pasar_modern: {persimpangan_HRMuhammad_Jonosewojo : raya_darmo_permai},
     vasa_hotel: {persimpangan_HRMuhammad_Jonosewojo : HRMuhammad, bundaran_satelit : HRMuhammad},
-    bundaran_satelit: {vasa_hotel : HRMuhammad, persimpangan_mayjenSungkono_rayaDukuhKupang : mayjen_sungkono, gerbang_tol_satelit : jalan_tol_satelit},
+    bundaran_satelit: {vasa_hotel : HRMuhammad, persimpangan_mayjenSungkono_rayaDukuhKupang : mayjen_sungkono, gerbang_tol_satelit : jalan_tol_satelit, persimpangan_ahmadYani_siwalankerto:gang_1},
     gerbang_tol_satelit: {bundaran_satelit : jalan_tol_satelit, exit_tol_waru : tol_perak_waru},
     persimpangan_mayjenSungkono_rayaDukuhKupang: {bundaran_satelit : mayjen_sungkono, shangrila_hotel : mayjen_sungkono, islamic_centre : raya_dukuh_kupang},
     shangrila_hotel: {ciputra_world : mayjen_sungkono, persimpangan_mayjenSungkono_rayaDukuhKupang : mayjen_sungkono},
@@ -90,7 +91,7 @@ graph = {
     ciputra_world: {shangrila_hotel : mayjen_sungkono, rumah_sakit_mayapada : mayjen_sungkono},
     rumah_sakit_mayapada: {ciputra_world : mayjen_sungkono, persimpangan_adityawarman_indragiri : adityawarman},
     persimpangan_adityawarman_indragiri: {rumah_sakit_mayapada : adityawarman, persimpangan_adityawarman_ciliwung : adityawarman, gor_pancasila : indragiri},
-    persimpangan_girilaya_diponegoro: {islamic_centre : girilaya, persimpangan_indragiri_diponegoro : diponegoro},
+    persimpangan_girilaya_diponegoro: {islamic_centre : girilaya, persimpangan_indragiri_diponegoro : diponegoro, tunjungan_plaza:gang_2},
     persimpangan_indragiri_diponegoro: {persimpangan_girilaya_diponegoro : diponegoro, persimpangan_DRSoetomo_rayaDarmo : drSoetomo, gor_pancasila : indragiri},
     gor_pancasila: {persimpangan_adityawarman_indragiri : indragiri, persimpangan_indragiri_diponegoro : indragiri},
     persimpangan_adityawarman_ciliwung: {persimpangan_adityawarman_indragiri : adityawarman, persimpangan_diponegoro_ciliwung : ciliwung},
@@ -106,7 +107,7 @@ graph = {
     monumen_bambu_runcing: {persimpangan_uripSumoharjo_basukiRahmat : panglima_sudirman},
     persimpangan_ahmadYani_wonokromo: {kebun_binatang_surabaya : wonokromo, maspion_square : ahmad_yani},
     maspion_square: {persimpangan_ahmadYani_wonokromo : ahmad_yani, persimpangan_ahmadYani_siwalankerto : ahmad_yani},
-    persimpangan_ahmadYani_siwalankerto: {maspion_square : ahmad_yani, pcu : siwalankerto, bundaran_waru : ahmad_yani},
+    persimpangan_ahmadYani_siwalankerto: {maspion_square : ahmad_yani, pcu : siwalankerto, bundaran_waru : ahmad_yani, bundaran_satelit:gang_1},
     pcu: {persimpangan_ahmadYani_siwalankerto : siwalankerto},
     bundaran_waru: {persimpangan_ahmadYani_siwalankerto : ahmad_yani, exit_tol_waru : raya_geluran},
     exit_tol_waru: {bundaran_waru : raya_geluran, gerbang_tol_satelit : tol_perak_waru},
