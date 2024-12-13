@@ -1,21 +1,24 @@
 Fitur done:
-- vertex menggunakan class Vertex yang menggunakan sistem koordinat x,y
-- edge menggunakan class Path
-- dijkstra algorithm sederhana
+- vertex menggunakan class Vertex yang menggunakan sistem koordinat x,y - Christopher
+- edge menggunakan class Path - Christopher
+- dijkstra algorithm sederhana - Christopher
 - class Transportation, Car, Motorcycle, Walking (Marco)
 - class Bicycle, Bus - Jess
 - jalan(edge) khusus car, motorcycle, atau walking - Marco (Semoga udah gk ada bug lagi hehe)
 - Instruksi Arah Total - Chris, Eve
+- weight tiap edge(jalan) final (waktu final) yang sudah dihitung dari distance dengan kemacetan,
+kecepatan vehicle, bensin, dll. Bisa dibilang weight edge final = waktu final melewati edge
+- perhitungan waktu start time, end time. (Ex: Start jam 06:00, end jam 09:30) - Jess, Christopher
+- Bikin graf - Marco
+
 
 Todo:
-4. weight tiap edge(jalan) final (waktu final) yang sudah dihitung dari distance dengan kemacetan,
-kecepatan vehicle, bensin, dll. Bisa dibilang weight edge final = waktu final melewati edge tersebut.
-(Jarak * kecepatan vehicle * kemacetan * kondisi jalan = waktu final)
-5. perhitungan waktu start time, end time. (Ex: Start jam 06:00, end jam 09:30)
-6. Bikin graf - Marco
-
-Tambahan":
-6. sistem lampu merah, kereta api lintas
-7. bensin, tempat isi bensin
-8. visualisasi graf, seperti pakai matplotlib
-dll
+- Sistem lampu merah: Jadi idenya untuk setiap edge yang menuju ke vertex yang memiliki boolean lampu merah true maka congestionnya akan ditambah sekian (sebagai kemacetan rata2 dari adanya lampu merah) - Marco
+- Tingkat kemacetan yang dinamis berdasarkan waktu saat ini (kalau bisa)
+- Pengecekan kalau ngga ketemu jalan dari poin A ke poin B
+- Error handling:
+a. Division by zero Ketika congestion nya 1 (full macet total, jadi ga bisa melewati jalan tersebut soalnya infinite)
+b. Dll yang ada
+- Menu
+- Perhitungan liter bensin
+- dll
