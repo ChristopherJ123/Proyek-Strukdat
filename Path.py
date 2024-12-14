@@ -11,6 +11,9 @@ class Path:
         self.condition = condition
         self.congestion = congestion
 
+    def __str__(self):
+        return f"{{road_name:{self.road_name}, road_type:{self.road_type}, condition:{self.condition}, congestion:{self.congestion}}}"
+
     def set_distance(self, distance):
         self.distance = distance
 

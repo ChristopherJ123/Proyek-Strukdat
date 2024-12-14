@@ -11,6 +11,8 @@ class Vertex:
         self.y = y
         self.name = name
 
+    def __str__(self):
+        return f"{{name:{self.name}, x:{self.x}, y:{self.y}}}"
 
     #Entah kenapa codenya akan rusak kalau gak ada function ini, barangkali bisa tolong dijelasin sama christo
     def __lt__(self, other):
