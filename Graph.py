@@ -363,7 +363,10 @@ class Graph:
             print("must greater then zero!")
         else:
             time_taken = total_distance / vehicle.speed
-        fuel_consumed = total_distance * vehicle.fuel_efficiency
+            #Fuel Efficiency = ... KM / liter
+            #Karena total_distance mainly M kita ubah ke KM dulu trus bagi dengan fuel efficiency buat dapet
+            #Konsumsinya berapa banyak
+        fuel_consumed = (total_distance / 1000) / vehicle.fuel_efficiency
 
         if(total_distance >= 1000):
             print(f"\nTotal jarak: {round(total_distance) / 1000} KM")
@@ -373,7 +376,7 @@ class Graph:
         if (fuel_consumed >= 1):
             print(f"Konsumsi bahan bakar: {fuel_consumed:.2f} Liter")
         else:
-            print(f"Konsumsi bahan bakar: {fuel_consumed * 1000:.0f} mL")
+            print(f"Konsumsi bahan bakar: {fuel_consumed * 1000} mL")
 
         # ALTERNATIF JALAN TERCEPAT BERDASARKAN JARAK TERDEKAT, BUKAN WAKTU
 
