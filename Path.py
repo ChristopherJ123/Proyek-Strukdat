@@ -19,7 +19,8 @@ class Path:
 
     def travel_time(self, base_speed):
         # Menghitung waktu final dengan mempertimbangkan kemacetan dan kondisi jalan
-        final_time = (self.distance / base_speed) / (1 - self.congestion) if self.congestion <= 1 else 9999
+        # Distance dibagi 1000 soalnya satuan m ke km
+        final_time = ((self.distance / 1000) / base_speed) / (1 - self.congestion) if self.congestion <= 1 else 9999
 
         if not self.condition:  # kalo jalan buruk dikalikan 1.5
             final_time *= 1.5

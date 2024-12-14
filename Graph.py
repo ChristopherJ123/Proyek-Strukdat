@@ -19,6 +19,15 @@ class Graph:
                     self.graph[start][end] = graph[start][end]
                 self.graph[start][end].set_distance(math.sqrt(pow(abs(start.x - end.x), 2) + pow(abs(start.y - end.y), 2)))
 
+    def scale_distances(self, multitude_of):
+        """
+        Scale the distance of each edge with the multitude of. Jangan lupa di make_graph dulu.
+        :param multitude_of: multitude
+        """
+        for start, visit in self.graph.items():
+            for vertex, path in visit.items():
+                path.distance *= multitude_of
+
     def add_vertex(self, vertex):
         self.graph[vertex] = {}
         print("New location added successfully.")
@@ -353,12 +362,12 @@ class Graph:
         fuel_consumed = total_distance * vehicle.fuel_efficiency
 
         if(total_distance >= 1000):
-            print(f"\nTotal jarak: {round(total_distance) / 1000} km")
+            print(f"\nTotal jarak: {round(total_distance) / 1000} KM")
         else:
-            print(f"\nTotal jarak: {total_distance} km")
+            print(f"\nTotal jarak: {total_distance} M")
 
         if (fuel_consumed >= 1):
-            print(f"Konsumsi bahan bakar: {fuel_consumed:.2f} liter")
+            print(f"Konsumsi bahan bakar: {fuel_consumed:.2f} Liter")
         else:
             print(f"Konsumsi bahan bakar: {fuel_consumed * 1000:.0f} mL")
 
@@ -444,12 +453,12 @@ class Graph:
         fuel_consumed = total_distance * vehicle.fuel_efficiency
 
         if (total_distance >= 1000):
-            print(f"\nTotal jarak: {round(total_distance) / 1000} km")
+            print(f"\nTotal jarak: {round(total_distance) / 1000} KM")
         else:
-            print(f"\nTotal jarak: {total_distance} km")
+            print(f"\nTotal jarak: {total_distance} M")
 
         if (fuel_consumed >= 1):
-            print(f"Konsumsi bahan bakar: {fuel_consumed:.2f} liter")
+            print(f"Konsumsi bahan bakar: {fuel_consumed:.2f} Liter")
         else:
             print(f"Konsumsi bahan bakar: {fuel_consumed * 1000:.0f} mL")
 
