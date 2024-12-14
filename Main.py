@@ -92,7 +92,7 @@ distances, predecessor = gr.shortest_times(A, car)
 
 print("===DISTANCES===")
 for key, value in distances.items():
-    print(f"{key.name}: [{value['jarak']}, {value['waktu']}]", end = " M\n" if value['jarak'] < 1000 else " KM\n")
+    print(f"{key.name}: [{value['jarak']}, {Timer(hours=value['waktu'])}]", end = " M\n" if value['jarak'] < 1000 else " KM\n")
 
 
 
@@ -112,7 +112,7 @@ distances2, predecessor2 = gr.shortest_times(A, motor, pagi)
 
 print("===DISTANCES 2===")
 for key, value in distances2.items():
-    print(f"{key.name}: [{value['jarak']}, {value['waktu']}]", end = " M\n" if value['jarak'] < 1000 else " KM\n")
+    print(f"{key.name}: [{value['jarak']}, {Timer(hours=value['waktu'])}]", end = " M\n" if value['jarak'] < 1000 else " KM\n")
 
 print("===PREDECESSOR 2===")
 
@@ -157,7 +157,7 @@ jarak, predesesor = graf.shortest_times(a, car)
 
 print("===DISTANCES===")
 for key, value in jarak.items():
-    print(f"{key.name}: [{value['jarak']}, {value['waktu']}]", end = " M\n" if value['jarak'] < 1000 else " KM\n")
+    print(f"{key.name}: [{value['jarak']}, {Timer(hours=value['waktu'])}]", end = " M\n" if value['jarak'] < 1000 else " KM\n")
 
 
 

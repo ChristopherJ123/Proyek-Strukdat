@@ -276,7 +276,7 @@ class Graph:
                 if not sourceKetemu: print("Source tidak ditemukan!")
                 if not destinationKetemu: print("Destination tidak ditemukan!")
 
-        print("===JALAN UTAMA BERDASARKAN WAKTU TERCEPAT===")
+        print("===JALUR UTAMA BERDASARKAN WAKTU TERCEPAT===")
 
         distances, predecessors = self.shortest_times(source, vehicle, start_time)
 
@@ -287,7 +287,6 @@ class Graph:
         # Hitung waktu kedatangan
         arrival_times = {}  # Dictionary untuk waktu kedatangan
         for node, distance in distances.items():
-            print(node.name, timedelta(hours=distance['waktu']))
             if start_time and distance['waktu'] != float('inf'):
                 arrival_times[node] = start_time.get_hours() + distance['waktu']
 
@@ -364,9 +363,13 @@ class Graph:
             print(f"Konsumsi bahan bakar: {fuel_consumed * 1000:.0f} mL")
 
         # ALTERNATIF JALAN TERCEPAT BERDASARKAN JARAK TERDEKAT, BUKAN WAKTU
-        print("===JALAN ALTERNATIF BERDASARKAN JARAK TERDEKAT===")
 
         distances2, predecessors2 = self.shortest_distances(source, vehicle, start_time)
+
+        if str(Timer(hours=distances2[destination]['waktu'])) == str(Timer(hours=distances[destination]['waktu'])):
+            return
+
+        print("===JALUR ALTERNATIF BERDASARKAN JARAK TERDEKAT===")
 
         if (distances2[destination] == float('inf')):
             print(f"no valid path from {source.name} to {destination.name}")
