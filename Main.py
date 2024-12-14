@@ -6,8 +6,8 @@ from Timer import Timer
 from Vertex import Vertex
 
 gr = Graph()
-car = Car(50, 10)
-motor = Motorcycle(40, 10)
+car = Car(50, 10) #Pemakaian 10 KM / Liter
+motor = Motorcycle(40, 10) #Pemakaian 10 KM / Liter
 
 A = Vertex(0, 0, "A")
 B = Vertex(3, 4, "B")
