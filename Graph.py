@@ -1,9 +1,7 @@
-from heapq import heapify, heappop, heappush
 import math
-from datetime import datetime, timedelta
+from heapq import heapify, heappop, heappush
 
 from Timer import Timer
-from Transportation import Transportation
 
 
 class Graph:
@@ -18,6 +16,12 @@ class Graph:
                 if end not in self.graph[start]:
                     self.graph[start][end] = graph[start][end]
                 self.graph[start][end].set_distance(math.sqrt(pow(abs(start.x - end.x), 2) + pow(abs(start.y - end.y), 2)))
+
+        # Tambah congestion bagi edge yang menyambung ke sebuah vertex yang memiliki lampu lalu lintas dengan sekian.
+        for start, visit in self.graph.items():
+            for vertex, path in visit.items():
+                if vertex.has_lampu_lalu_lintas:
+                    path.congestion = min(path.congestion + (1 - path.congestion) * 0.3, 1.0)  # menambah kemacetan
 
     def scale_distances(self, multitude_of):
         """
@@ -94,7 +98,7 @@ class Graph:
                     
         print("Sorry, we don't seem to have a road with that name.")
         
-    # hitung final_time edge dgn mempertimbangakn kemacetan, jalan, speed, jam brngkt. 
+    # hitung final_time edge dgn mempertimbangakn kemacetan, jalan, speed, jam brngkt.
     def calculate_edge(self, path, vehicle, curr_time=Timer()):
         base_time= path.travel_time(vehicle.speed) #waktu dasar dr jarak/kecepatan 
 

@@ -1,11 +1,9 @@
+from Car import Car
 from Graph import Graph
+from Motorcycle import Motorcycle
 from Path import Path
 from Timer import Timer
 from Vertex import Vertex
-from Walking import Walking
-from Car import Car
-from Motorcycle import Motorcycle
-from datetime import datetime
 
 gr = Graph()
 car = Car(50, 10)
@@ -273,7 +271,6 @@ while choice!=0:
 from Graph import Graph
 from Path import Path
 from Vertex import Vertex
-from Walking import Walking
 from Car import Car
 from Motorcycle import Motorcycle
 

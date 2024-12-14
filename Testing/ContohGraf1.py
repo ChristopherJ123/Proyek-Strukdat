@@ -39,6 +39,7 @@ contoh_graph1 = {
 
 gr = Graph()
 gr.make_graph(contoh_graph1)
+gr.scale_distances(1000)
 # print(pathAB.travel_time(5))
 # distances , predecessors = gr.shortest_distances(A, Car(50, 50))
 

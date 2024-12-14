@@ -1,5 +1,6 @@
 from Graph import Graph
 from Path import Path
+from Timer import Timer
 from Vertex import Vertex
 from Walking import Walking
 from Car import Car
@@ -114,10 +115,11 @@ graph = {
 }
 
 gr.make_graph(graph)
+# gr.scale_distances(1) # Skala dari 10meter dijadiin 1m
 distances, predecessor = gr.shortest_times(gerbang_tol_satelit, motor)
 print("===DISTANCES===")
 for key, value in distances.items():
-    print(f"{key.name}: {value*10} M")
+    print(f"{key.name}: [{value['jarak']}, {Timer(hours=value['waktu'])}]", end = " M\n" if value['jarak'] < 1000 else " KM\n")
 
 print()
 print("===PREDECESSOR===")
@@ -133,21 +135,21 @@ gr.go_from_a_to_b(gerbang_tol_satelit, exit_tol_waru, motor)
 
 #29,34,32 jalan
 
-# Draw the graph
-G = nx.DiGraph()
-for v, e in gr.graph.items():
-    G.add_node(v.name, pos=(v.x, v.y))
-    for neighbour, path in e.items():
-        G.add_edge(v.name, neighbour.name, label=round(path.distance))
-
-positions = nx.get_node_attributes(G, 'pos')
-
-plt.figure(figsize=(20, 16))
-nx.draw(G, positions, with_labels=True, node_size=500, node_color='skyblue', font_weight='bold', font_size=7, arrowsize=20)
-
-# Draw edge labels
-edge_labels = nx.get_edge_attributes(G, 'label')
-nx.draw_networkx_edge_labels(G, positions, edge_labels=edge_labels, font_size=8)
-
-plt.title("Graph Visualization", fontsize=9)
-plt.show()
+# # Draw the graph
+# G = nx.DiGraph()
+# for v, e in gr.graph.items():
+#     G.add_node(v.name, pos=(v.x, v.y))
+#     for neighbour, path in e.items():
+#         G.add_edge(v.name, neighbour.name, label=round(path.distance))
+#
+# positions = nx.get_node_attributes(G, 'pos')
+#
+# plt.figure(figsize=(20, 16))
+# nx.draw(G, positions, with_labels=True, node_size=500, node_color='skyblue', font_weight='bold', font_size=7, arrowsize=20)
+#
+# # Draw edge labels
+# edge_labels = nx.get_edge_attributes(G, 'label')
+# nx.draw_networkx_edge_labels(G, positions, edge_labels=edge_labels, font_size=8)
+#
+# plt.title("Graph Visualization", fontsize=9)
+# plt.show()
