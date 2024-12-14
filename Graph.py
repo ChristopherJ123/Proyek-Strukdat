@@ -158,6 +158,55 @@ class Graph:
 
         return distances, predecessors
 
+    def shortest_distances(self, source, vehicle, start_time = Timer()): # Jalan alternatif yang jarak terbendek, bukan waktu tersingkat
+        # Dijkstra Algorithm
+        # Initialize the values of all nodes with infinity
+        distances = {vertex: {'jarak' : float("inf"), 'waktu' : float("inf")} for vertex in self.graph}
+        distances[source]['jarak'] = 0  # Set the source value to 0
+        distances[source]['waktu'] = start_time.get_hours()
+
+        # Initialize priority queue
+        pq = [(0, 0, source)] # [(time satuan jam, distance satuan km, vertex)] priority queue nya berdasarkan time terkecil.
+        heapify(pq)
+
+        # Set to hold visited nodes
+        visited = set()
+
+        while pq:
+            current_distance, current_time, current_vertex = heappop(pq)
+
+            if current_vertex in visited:
+                continue
+            visited.add(current_vertex)
+
+            for neighbour_vertex, neighbour_path in self.graph[current_vertex].items():
+                # Calculate the distance from current_vertex to the neighbour_vertex
+                # Ini skrg aku tambahin supaya cuma jenis kendaraan tertentu yang bisa lewat jalan tertentu
+                if vehicle.can_traverse(neighbour_path.road_type):
+                    neighbour_time_weight = neighbour_path.travel_time(vehicle.speed)  # Format: x Jam
+                  # neighbour_time_weight = self.calculate_edge(neighbour_path, vehicle, start_time) # Format: x Jam
+
+                    tentative_distance = current_distance + neighbour_path.distance
+                    tentative_time = current_time + neighbour_time_weight
+                    if tentative_distance < distances[neighbour_vertex]['jarak']:
+                        distances[neighbour_vertex]['jarak'] = tentative_distance
+
+                        #hitung  arrival time di neighbour
+                        distances[neighbour_vertex]['waktu'] = tentative_time
+
+                        heappush(pq, (tentative_distance, tentative_time, neighbour_vertex))
+
+        # Melihat Jalur awalnya
+        predecessors = {vertex: {'vertex_asal' : None, 'path' : None} for vertex in self.graph}
+        for vertex, distance in distances.items():
+            for neighbour_vertex, neighbour_path in self.graph[vertex].items():
+                if (distance['jarak'] + neighbour_path.distance == distances[neighbour_vertex]['jarak']
+                        and distances[neighbour_vertex]['jarak'] != float('inf') and vehicle.can_traverse(neighbour_path.road_type)):
+                    predecessors[neighbour_vertex]['vertex_asal'] = vertex
+                    predecessors[neighbour_vertex]['path'] = neighbour_path
+
+        return distances, predecessors
+
     def getNextDirection(self, startDest, middleDest, endDest):
 
         if (startDest.x == middleDest.x): #Jika Path Sebelumnya No Gradient (Jalan sebelumnya lurus)
@@ -214,7 +263,7 @@ class Graph:
 
     def go_from_a_to_b(self, source, destination, vehicle, start_time = Timer()):
         if type(source) == str and type(destination) == str:  # Cek source & destination apakah ada di graph
-            sourceKetemu = False;
+            sourceKetemu = False
             destinationKetemu = False
             for vertex in self.graph:
                 if not sourceKetemu and vertex.name.lower() == source.lower():
@@ -226,25 +275,29 @@ class Graph:
             if not sourceKetemu or not destinationKetemu:
                 if not sourceKetemu: print("Source tidak ditemukan!")
                 if not destinationKetemu: print("Destination tidak ditemukan!")
+
+        print("===JALAN UTAMA BERDASARKAN WAKTU TERCEPAT===")
+
         distances, predecessors = self.shortest_times(source, vehicle, start_time)
 
         if (distances[destination] == float('inf')):
             print(f"no valid path from {source.name} to {destination.name}")
             return
-        
+
         # Hitung waktu kedatangan
         arrival_times = {}  # Dictionary untuk waktu kedatangan
         for node, distance in distances.items():
+            print(node.name, timedelta(hours=distance['waktu']))
             if start_time and distance['waktu'] != float('inf'):
                 arrival_times[node] = start_time.get_hours() + distance['waktu']
-        
+
         # print start dan estimated time
         str_start_time = start_time.get_time_formatted() if start_time else "now"
         arrival_time = Timer(hours=arrival_times[destination]) if destination in arrival_times else None
         total_time = Timer(hours=distances[destination]['waktu']) #dalam menit
         hours, minutes, seconds = total_time.get_time()
-        
-        
+
+
         print(f"\nStart time: {str_start_time}")
         print(f"Estimated arrival time: {arrival_time.get_time_formatted() if arrival_time else 'unknown'}")
         if hours == 0 and minutes == 0: # Kurang yakin ini fungsinya apa
@@ -253,7 +306,7 @@ class Graph:
             print(f"Total travel time: {hours} hours {minutes} minutes")
         else:
             print(f"Total travel time: {minutes} minutes")
-       
+
 
         trace = []
         current_vertex = destination
@@ -277,7 +330,7 @@ class Graph:
                 if (i > 0):
                     if (i+1 == len(trace)):
                         print(self.getNextDirection(trace[i - 1]['vertex_asal'], trace[i]['vertex_asal'], destination), end = " ")
-                    elif (i+1 < len(trace)): 
+                    elif (i+1 < len(trace)):
                         print(self.getNextDirection(trace[i - 1]['vertex_asal'], trace[i]['vertex_asal'], trace[i+1]['vertex_asal']), end = " ")
 
                 else:
@@ -305,12 +358,93 @@ class Graph:
         else:
             print(f"\nTotal jarak: {total_distance} km")
 
-        if (time_taken >= 1):
-             print(f"Estimasi waktu perjalanan: {time_taken} jam")
+        if (fuel_consumed >= 1):
+            print(f"Konsumsi bahan bakar: {fuel_consumed:.2f} liter")
         else:
-            minutes= time_taken * 60
-            (f"Estimasi waktu perjalanan: {minutes} menit")
-        
+            print(f"Konsumsi bahan bakar: {fuel_consumed * 1000:.0f} mL")
+
+        # ALTERNATIF JALAN TERCEPAT BERDASARKAN JARAK TERDEKAT, BUKAN WAKTU
+        print("===JALAN ALTERNATIF BERDASARKAN JARAK TERDEKAT===")
+
+        distances2, predecessors2 = self.shortest_distances(source, vehicle, start_time)
+
+        if (distances2[destination] == float('inf')):
+            print(f"no valid path from {source.name} to {destination.name}")
+            return
+
+        # Hitung waktu kedatangan
+        arrival_times = {}  # Dictionary untuk waktu kedatangan
+        for node, distance in distances2.items():
+            if start_time and distance['waktu'] != float('inf'):
+                arrival_times[node] = start_time.get_hours() + distance['waktu']
+
+        # print start dan estimated time
+        str_start_time = start_time.get_time_formatted() if start_time else "now"
+        arrival_time = Timer(hours=arrival_times[destination]) if destination in arrival_times else None
+        total_time = Timer(hours=distances2[destination]['waktu'])  # dalam menit
+        hours, minutes, seconds = total_time.get_time()
+
+        print(f"\nStart time: {str_start_time}")
+        print(f"Estimated arrival time: {arrival_time.get_time_formatted() if arrival_time else 'unknown'}")
+        if hours == 0 and minutes == 0:  # Kurang yakin ini fungsinya apa
+            minutes = 1
+        if hours > 0:
+            print(f"Total travel time: {hours} hours {minutes} minutes")
+        else:
+            print(f"Total travel time: {minutes} minutes")
+
+        trace = []
+        current_vertex = destination
+        total_distance = 0
+
+        while predecessors2[current_vertex]['path'] is not None:
+            total_distance += predecessors2[current_vertex]['path'].distance
+            trace.append(predecessors2[current_vertex])
+            current_vertex = predecessors2[current_vertex]['vertex_asal']
+
+        trace.reverse()
+        direction = True
+
+        for i in range(len(trace)):
+            direction = False
+            if (i > 0 and trace[i]['path'].road_name == trace[i - 1]['path'].road_name):
+                print("Lurus Ke", end=" ")
+                direction = True
+
+            if (not direction):
+                if (i > 0):
+                    if (i + 1 == len(trace)):
+                        print(self.getNextDirection(trace[i - 1]['vertex_asal'], trace[i]['vertex_asal'], destination),
+                              end=" ")
+                    elif (i + 1 < len(trace)):
+                        print(self.getNextDirection(trace[i - 1]['vertex_asal'], trace[i]['vertex_asal'],
+                                                    trace[i + 1]['vertex_asal']), end=" ")
+
+                else:
+                    if (i + 1 == len(trace)):
+                        print(self.getFirstDirection(trace[i]['vertex_asal'], destination), end=" ")
+                    else:
+                        print(self.getFirstDirection(trace[i]['vertex_asal'], trace[i + 1]['vertex_asal']), end=" ")
+
+            # print(instruction[i] if instruction[i] else None, end = " ")
+            print(trace[i]['path'].road_name if trace[i]['path'] else None)
+
+            # Hitung jarak per jalan
+            jarak = round(trace[i]['path'].distance)
+            print("Ikuti jalan sejauh", str(jarak) + " M" if jarak < 1000 else str(jarak / 1000) + " KM")
+        print("\nAnda Telah Tiba Di Tujuan Anda!")
+
+        if vehicle.speed <= 0:
+            print("must greater then zero!")
+        else:
+            time_taken = total_distance / vehicle.speed
+        fuel_consumed = total_distance * vehicle.fuel_efficiency
+
+        if (total_distance >= 1000):
+            print(f"\nTotal jarak: {round(total_distance) / 1000} km")
+        else:
+            print(f"\nTotal jarak: {total_distance} km")
+
         if (fuel_consumed >= 1):
             print(f"Konsumsi bahan bakar: {fuel_consumed:.2f} liter")
         else:

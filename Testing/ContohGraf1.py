@@ -16,7 +16,7 @@ G = Vertex(4, -3, "G")
 H = Vertex(13, -2, "H")
 I = Vertex(14, -2, "I")
 
-pathAB = Path("Alfa Bravo", 1, True, 0.0)
+pathAB = Path("Alfa Bravo", 1, False, 0.0)
 pathBD = Path("Bravo Delta", 1, True, 0.0)
 pathBC = Path("Bravo Charlie", 1, True, 0.0)
 pathBE = Path("Bravo Echo", 1, True, 0.0)
