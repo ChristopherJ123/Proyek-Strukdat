@@ -78,19 +78,19 @@ class Graph:
             for key, value in end.items():
                 if value.road_name == roadName:
                     if change == 1:
-                       value.road_name = input("Please enter the correct road name: ") 
+                       value.road_name = get_valid_input("string", "Please enter the correct road name: ") 
                        print("\nRoad information updated successfully.")
                     elif change == 2:
                         print("Tipe dari jalan: \n'1 : Jalan biasa', '2 : Jalan Tol', '3 : Jalan sempit/gang', '4 : Jalan pejalan kaki'.")
-                        value.road_type = int(input("Please enter the correct road type: "))
+                        value.road_type = get_valid_input("int", "Please enter the current road type: ", {1, 2, 3, 4})
                         print("\nRoad information updated successfully.")
                     elif change == 3:
                         print("Kondisi dari jalan: 'True : Bagus', 'False : Buruk'.")
-                        value.road_condition = bool(input("Please enter the correct road condition information:"))
+                        value.road_condition = get_valid_input("boolean", "Please enter the current road condition: ")
                         print("\nRoad information updated successfully.")
                     elif change == 4:
                         print("Tingkat kemacetan antara range 0.0 (Sangat lancar) - 1.0 (Macet Total)")
-                        value.road_congestion = float(input("Please enter the correct road congestion rate:"))
+                        value.road_congestion = get_valid_input("float", "Please enter the current road congestion rate:", (0.0, 1.0))
                         print("\nRoad information updated successfully.")
                     else :
                         print("Input outside of choices. Please try again.")
@@ -470,8 +470,19 @@ class Graph:
             print(f"Konsumsi bahan bakar: {fuel_consumed * 1000:.0f} mL")
 
 
-
     def print_graph(self):
         for start, end in self.graph.items():
             for key, value in end.items():
                 print(f"{start.name}, {key.name}, {value.distance}, {value.road_name}")
+
+    def list_of_locations(self):
+        edges = set()  
+        for start, end in self.graph.items():
+            if start.name not in edges:
+                edges.add(start.name)  
+
+            for key in end.keys():
+                if key.name not in edges:
+                    edges.add(key.name)  
+        return edges
+
