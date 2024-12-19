@@ -128,7 +128,6 @@ graph = {
 }
 
 gr.make_graph(graph)
-gr.scale_distances(1)
 distances, predecessor = gr.shortest_times(gerbang_tol_satelit, motor)
 print("===DISTANCES===")
 for key, value in distances.items():

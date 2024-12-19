@@ -534,7 +534,7 @@ class Graph:
     def print_graph(self):
         for start, end in self.graph.items():
             for key, value in end.items():
-                print(f"{start.name}, {key.name}, {value.distance}, {value.road_name}")
+                print(f"{start.name}, {key.name}, distance:{value.distance} M, road_name:{value.road_name}, road_type:{value.road_type}, condition:{value.condition}, congestion:{value.congestion}")
 
     def list_of_locations(self):
         edges = set()
