@@ -54,13 +54,13 @@ def print_optimalPathPage():
     print("Destination point: ", end)
     print("Current vehicle: ", current_vehicle.vehicle_type)
     print("Choices: ")
-    print("> Search for optimal path based on : ")
+    print("> Search for optimal path based on: ")
     print("1. The shortest distance") 
     print("2. The shortest amount of estimated time")
-    print("> Or do the following details:")
-    print("4. Change start point")
-    print("5. Change destination point")
-    print("6. Change current vehicle")
+    print("> Or do the following: ")
+    print("3. Change start point")
+    print("4. Change destination point")
+    print("5. Change current vehicle")
     print("0. Exit")
     print("-1. Back to the main page")
 
@@ -205,7 +205,7 @@ while choice!=0:
 
         while choice == 2 :
             print_optimalPathPage()
-            input2 = get_valid_input("int", prompt1, {1, 2, 3, 4, 5, 6, 0, -1})
+            input2 = get_valid_input("int", prompt1, {1, 2, 3, 4, 5, 0, -1})
             
             if input2 == 1:
                 gr.go_from_a_to_b_jarak_terdekat(start, end, current_vehicle)
@@ -213,13 +213,13 @@ while choice!=0:
             elif input2 == 2:
                 gr.go_from_a_to_b_waktu_tercepat(start, end, current_vehicle)
             
-            elif input2 == 4:
+            elif input2 == 3:
                 start = get_valid_input("string", "\nWhere do you want to start your journey? ", vertexes)
 
-            elif input2 == 5:
+            elif input2 == 4:
                 end = get_valid_input("string", "Where do you want to go? ", vertexes)
 
-            elif input2 == 6:
+            elif input2 == 5:
                 print(f"\n Your current vehicle is a {current_vehicle.vehicle_type}. What would you like to change it into?")
                 print("The choices are : Car, Motorcycle, Bus, Bicycle, Walking")
                 vehicle_list = {"Car", "Motorcycle", "Bus", "Bicycle", "Walking"}
