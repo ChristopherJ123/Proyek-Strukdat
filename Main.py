@@ -257,7 +257,6 @@ def get_valid_input(prompt_type, prompt, choices=None):
                     else:
                         print(f"Error: '{user_input}' is not a valid choice. Please choose from {choices}.")
                 elif prompt_type == "boolean" :
-                    print("easdaddwwas")
                     # For case-insensitive string matching
                     if user_input.lower() == "true": return True
                     elif user_input.lower() == "false": return False
