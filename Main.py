@@ -1,4 +1,7 @@
 from Car import Car
+from Bus import Bus
+from Bicycle import Bicycle
+from Walking import Walking
 from Graph import Graph
 from Motorcycle import Motorcycle
 from Path import Path
@@ -183,9 +186,9 @@ def print_mainPage():
 
 def print_optimalPathPage():
     print("\n============== Optimal Path Page ==============")
-    print("Start point: "+start)
-    print("Destination point: "+end)
-    print("Current vehicle: "+current_vehicle)
+    print("Start point: ", start)
+    print("Destination point: ", end)
+    print("Current vehicle: ", current_vehicle.vehicle_type)
     print("Choices: ")
     print("> Search for optimal path based on : ")
     print("1. The shortest distance") 
@@ -216,7 +219,7 @@ def createPath():
     road_type = get_valid_input("int", "Input road type: ", valid_choices)
 
     print("Kondisi dari jalan: 'True : Bagus', 'False : Buruk'.")
-    road_condition = get_valid_input("boolean", "Input road condition: ")
+    road_condition = get_valid_input("boolean", "Input road condition: ", {"true", "false"})
 
     print("Tingkat kemacetan antara range 0.0 (Sangat lancar) - 1.0 (Macet Total)")
     valid_choices = (0.0, 1.0)
@@ -235,7 +238,7 @@ def get_valid_input(prompt_type, prompt, choices=None):
             elif prompt_type == "float":
                 user_input = float(input(prompt))
             elif prompt_type == "boolean":
-                user_input = bool(input(prompt))
+                user_input = input(prompt)
             else:
                 print(f"Error: Unsupported prompt type '{prompt_type}'. Please use 'int', 'string', or 'float'.")
                 return None  
@@ -253,7 +256,13 @@ def get_valid_input(prompt_type, prompt, choices=None):
                         return next(choice for choice in choices if str(choice).lower() == user_input.lower())
                     else:
                         print(f"Error: '{user_input}' is not a valid choice. Please choose from {choices}.")
-                else:
+                elif prompt_type == "boolean" :
+                    print("easdaddwwas")
+                    # For case-insensitive string matching
+                    if user_input.lower() == "true": return True
+                    elif user_input.lower() == "false": return False
+                    else: print(f"Error: '{user_input}' is not a valid choice. Please choose either true or false.")
+                elif prompt_type == "int":
                     # For other types (int or exact match)
                     if user_input in choices:
                         return user_input
