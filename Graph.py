@@ -134,11 +134,11 @@ class Graph:
                         print("\nRoad information updated successfully.")
                     elif change == 3:
                         print("Kondisi dari jalan: 'True : Bagus', 'False : Buruk'.")
-                        value.road_condition = self.get_valid_input("boolean", "Please enter the current road condition: ", {"true", "false"})
+                        value.condition = self.get_valid_input("boolean", "Please enter the current road condition: ", {"true", "false"})
                         print("\nRoad information updated successfully.")
                     elif change == 4:
                         print("Tingkat kemacetan antara range 0.0 (Sangat lancar) - 1.0 (Macet Total)")
-                        value.road_congestion = self.get_valid_input("float", "Please enter the current road congestion rate:", (0.0, 1.0))
+                        value.congestion = self.get_valid_input("float", "Please enter the current road congestion rate:", (0.0, 1.0))
                         print("\nRoad information updated successfully.")
                     else :
                         print("Input outside of choices. Please try again.")
