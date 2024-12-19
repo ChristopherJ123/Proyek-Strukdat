@@ -73,24 +73,70 @@ class Graph:
         self.graph[vertex1][vertex2].set_distance(math.sqrt(pow(abs(vertex1.x - vertex2.x), 2) + pow(abs(vertex1.y - vertex2.y), 2)))
         print("\nNew path added successfully.")
 
+    def get_valid_input(self, prompt_type, prompt, choices=None):
+        while True:
+            try:
+                if prompt_type == "int":
+                    user_input = int(input(prompt))
+                elif prompt_type == "string":
+                    user_input = input(prompt).strip()
+                elif prompt_type == "float":
+                    user_input = float(input(prompt))
+                elif prompt_type == "boolean":
+                    user_input = input(prompt)
+                else:
+                    print(f"Error: Unsupported prompt type '{prompt_type}'. Please use 'int', 'string', or 'float'.")
+                    return None  
+
+                if choices:
+                    if isinstance(choices, tuple) and len(choices) == 2 and prompt_type == "float":
+                        # Check if the float input is within the range
+                        if choices[0] <= user_input <= choices[1]:
+                            return user_input
+                        else:
+                            print(f"Error: {user_input} is not in the valid range {choices[0]} to {choices[1]}.")
+                    elif prompt_type == "string" and isinstance(choices, set):
+                        # For case-insensitive string matching
+                        if user_input.lower() in {str(choice).lower() for choice in choices}:
+                            return next(choice for choice in choices if str(choice).lower() == user_input.lower())
+                        else:
+                            print(f"Error: '{user_input}' is not a valid choice. Please choose from {choices}.")
+                    elif prompt_type == "boolean" :
+                        # For case-insensitive string matching
+                        if user_input.lower() == "true": return True
+                        elif user_input.lower() == "false": return False
+                        else: print(f"Error: '{user_input}' is not a valid choice. Please choose either true or false.")
+                    elif prompt_type == "int":
+                        # For other types (int or exact match)
+                        if user_input in choices:
+                            return user_input
+                        else:
+                            print(f"Error: {user_input} is not a valid choice. Please choose from {choices}.")
+                else:
+                    # No restrictions
+                    return user_input
+
+            except ValueError:
+                print(f"Error: Invalid input type. Expected a {prompt_type}. Please try again.")
+    
     def edit_path(self, roadName, change):
         for start, end in self.graph.items():
             for key, value in end.items():
-                if value.road_name == roadName:
+                if value.road_name.lower() == roadName.lower():
                     if change == 1:
-                       value.road_name = get_valid_input("string", "Please enter the correct road name: ") 
+                       value.road_name = self.get_valid_input("string", "Please enter the correct road name: ") 
                        print("\nRoad information updated successfully.")
                     elif change == 2:
                         print("Tipe dari jalan: \n'1 : Jalan biasa', '2 : Jalan Tol', '3 : Jalan sempit/gang', '4 : Jalan pejalan kaki'.")
-                        value.road_type = get_valid_input("int", "Please enter the current road type: ", {1, 2, 3, 4})
+                        value.road_type = self.get_valid_input("int", "Please enter the current road type: ", {1, 2, 3, 4})
                         print("\nRoad information updated successfully.")
                     elif change == 3:
                         print("Kondisi dari jalan: 'True : Bagus', 'False : Buruk'.")
-                        value.road_condition = get_valid_input("boolean", "Please enter the current road condition: ")
+                        value.road_condition = self.get_valid_input("boolean", "Please enter the current road condition: ", {"true", "false"})
                         print("\nRoad information updated successfully.")
                     elif change == 4:
                         print("Tingkat kemacetan antara range 0.0 (Sangat lancar) - 1.0 (Macet Total)")
-                        value.road_congestion = get_valid_input("float", "Please enter the current road congestion rate:", (0.0, 1.0))
+                        value.road_congestion = self.get_valid_input("float", "Please enter the current road congestion rate:", (0.0, 1.0))
                         print("\nRoad information updated successfully.")
                     else :
                         print("Input outside of choices. Please try again.")
