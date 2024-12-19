@@ -20,8 +20,8 @@ class Graph:
 
         # Tambah congestion bagi edge yang menyambung ke sebuah vertex yang memiliki lampu lalu lintas dengan sekian.
         for start, visit in self.graph.items():
-            for vertex, path in visit.items():
-                if vertex.has_lampu_lalu_lintas:
+            for vertex_tujuan, path in visit.items():
+                if vertex_tujuan.has_lampu_lalu_lintas:
                     path.congestion = min(path.congestion + (1 - path.congestion) * 0.3, 1.0)  # menambah kemacetan
 
     def scale_distances(self, multitude_of):
@@ -178,7 +178,7 @@ class Graph:
         distances[source]['waktu'] = start_time.get_hours()
 
         # Initialize priority queue
-        pq = [(0, 0, source)] # [(time satuan jam, distance satuan km, vertex)] priority queue nya berdasarkan time terkecil.
+        pq = [(0, 0, source)] # [(time satuan jam, distance satuan m, vertex)] priority queue nya berdasarkan time terkecil.
         heapify(pq)
 
         # Set to hold visited nodes
@@ -421,7 +421,6 @@ class Graph:
         else:
             print(f"\nTotal jarak: {total_distance} M")
 
-        print("FUEL CONSUMED:", fuel_consumed)
         if (fuel_consumed >= 1):
             print(f"Konsumsi bahan bakar: {fuel_consumed:.2f} Liter")
         else:
@@ -524,7 +523,6 @@ class Graph:
         else:
             print(f"\nTotal jarak: {total_distance} M")
 
-        print("FUEL CONSUMED:", fuel_consumed)
         if (fuel_consumed >= 1):
             print(f"Konsumsi bahan bakar: {fuel_consumed:.2f} Liter")
         else:

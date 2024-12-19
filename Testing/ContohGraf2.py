@@ -33,12 +33,11 @@ contoh_graph2 = {
 gr = Graph()
 gr.make_graph(contoh_graph2)
 gr.scale_distances(1000)
-# print(A)
-# print(pathAE)
+gr.print_graph()
 distances, predecessors = gr.shortest_times(A, Car(50, 50), Timer(hours=9, minutes=30))
 print("===DISTANCES===")
 for key, value in distances.items():
-    print(f"{key.name}: [{value['jarak']}, {Timer(hours=value['waktu'])}]", end = " M\n" if value['jarak'] < 1000 else " KM\n")
+    print(f"{key.name}: [{value['jarak']}, {Timer(hours=value['waktu'])}]", end = " M\n")
 
 
 
@@ -46,4 +45,6 @@ print("===PREDECESSOR===")
 
 for key, value in predecessors.items():
     print(f"{key.name}: {value['vertex_asal'].name if value['vertex_asal'] else None} {value['path'].road_name if value['path'] else None}")
+
 gr.go_from_a_to_b_jarak_terdekat('A', 'D', Car(50, 50), Timer(hours=9, minutes=30))
+gr.go_from_a_to_b_waktu_tercepat('A', 'D', Car(50, 50), Timer(hours=9, minutes=30))
