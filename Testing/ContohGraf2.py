@@ -46,4 +46,4 @@ print("===PREDECESSOR===")
 
 for key, value in predecessors.items():
     print(f"{key.name}: {value['vertex_asal'].name if value['vertex_asal'] else None} {value['path'].road_name if value['path'] else None}")
-gr.go_from_a_to_b('A', 'D', Car(50, 50), Timer(hours=9, minutes=30))
+gr.go_from_a_to_b_jarak_terdekat('A', 'D', Car(50, 50), Timer(hours=9, minutes=30))

@@ -44,7 +44,7 @@ gr.scale_distances(1000)
 # distances , predecessors = gr.shortest_distances(A, Car(50, 50))
 
 gr.print_graph()
-gr.go_from_a_to_b('A', 'I', Car(50, 50))
+gr.go_from_a_to_b_waktu_tercepat('A', 'I', Car(50, 50))
 
 # # Draw the graph
 # G = nx.DiGraph()

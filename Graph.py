@@ -5,8 +5,9 @@ from Timer import Timer
 
 
 class Graph:
-    def __init__(self):
+    def __init__(self, scale=1.0):
         self.graph = {}
+        self.scale = 1.0
 
     def make_graph(self, graph):
         for start, visit in graph.items():
@@ -15,7 +16,7 @@ class Graph:
             for end in visit:
                 if end not in self.graph[start]:
                     self.graph[start][end] = graph[start][end]
-                self.graph[start][end].set_distance(math.sqrt(pow(abs(start.x - end.x), 2) + pow(abs(start.y - end.y), 2)))
+                self.graph[start][end].set_distance((math.sqrt(pow(abs(start.x - end.x), 2) + pow(abs(start.y - end.y), 2))) * self.scale)
 
         # Tambah congestion bagi edge yang menyambung ke sebuah vertex yang memiliki lampu lalu lintas dengan sekian.
         for start, visit in self.graph.items():
@@ -28,6 +29,7 @@ class Graph:
         Scale the distance of each edge with the multitude of. Jangan lupa di make_graph dulu.
         :param multitude_of: multitude
         """
+        self.scale *= multitude_of
         for start, visit in self.graph.items():
             for vertex, path in visit.items():
                 path.distance *= multitude_of
@@ -41,11 +43,11 @@ class Graph:
 
         if vertex_to_delete is None:
             print(f"Location '{vertex_name}' not found.")
-            return  
+            return
         if vertex_to_delete in self.graph:
             del self.graph[vertex_to_delete]
             # print(f"Deleted vertex: {vertex_to_delete.name}")
-        for start, adjacencies in list(self.graph.items()):  
+        for start, adjacencies in list(self.graph.items()):
             if vertex_to_delete in adjacencies:
                 del adjacencies[vertex_to_delete]
                 # print(f"Removed edge from {start.name} to {vertex_to_delete.name}")
@@ -53,24 +55,24 @@ class Graph:
 
     def find_vertex(self, vertex_name):
         for vertex in self.graph:
-            if (vertex.name == vertex_name):
+            if (vertex.name.lower() == vertex_name.lower()):
                 # print("Found vertex.")
                 return vertex
         # print("Vertex not found.")
         return None
-    
+
     def add_edge(self, vertex1_name, vertex2_name, edge):
         vertex1 = self.find_vertex(vertex1_name)
         vertex2 = self.find_vertex(vertex2_name)
 
         if not vertex1 or not vertex2:
             raise ValueError(f"One or both location '{vertex1_name}' and '{vertex2_name}' not found in the graph!")
-        
+
         if vertex1 not in self.graph:
             self.graph[vertex1] = {}
         self.graph[vertex1][vertex2] = edge
-    
-        self.graph[vertex1][vertex2].set_distance(math.sqrt(pow(abs(vertex1.x - vertex2.x), 2) + pow(abs(vertex1.y - vertex2.y), 2)))
+
+        self.graph[vertex1][vertex2].set_distance((math.sqrt(pow(abs(vertex1.x - vertex2.x), 2) + pow(abs(vertex1.y - vertex2.y), 2))) * self.scale)
         print("\nNew path added successfully.")
 
     def get_valid_input(self, prompt_type, prompt, choices=None):
@@ -86,7 +88,7 @@ class Graph:
                     user_input = input(prompt)
                 else:
                     print(f"Error: Unsupported prompt type '{prompt_type}'. Please use 'int', 'string', or 'float'.")
-                    return None  
+                    return None
 
                 if choices:
                     if isinstance(choices, tuple) and len(choices) == 2 and prompt_type == "float":
@@ -118,13 +120,13 @@ class Graph:
 
             except ValueError:
                 print(f"Error: Invalid input type. Expected a {prompt_type}. Please try again.")
-    
+
     def edit_path(self, roadName, change):
         for start, end in self.graph.items():
             for key, value in end.items():
                 if value.road_name.lower() == roadName.lower():
                     if change == 1:
-                       value.road_name = self.get_valid_input("string", "Please enter the correct road name: ") 
+                       value.road_name = self.get_valid_input("string", "Please enter the correct road name: ")
                        print("\nRoad information updated successfully.")
                     elif change == 2:
                         print("Tipe dari jalan: \n'1 : Jalan biasa', '2 : Jalan Tol', '3 : Jalan sempit/gang', '4 : Jalan pejalan kaki'.")
@@ -141,12 +143,12 @@ class Graph:
                     else :
                         print("Input outside of choices. Please try again.")
                     return
-                    
+
         print("Sorry, we don't seem to have a road with that name.")
-        
+
     # hitung final_time edge dgn mempertimbangakn kemacetan, jalan, speed, jam brngkt.
     def calculate_edge(self, path, vehicle, curr_time=Timer()):
-        base_time= path.travel_time(vehicle.speed) #waktu dasar dr jarak/kecepatan 
+        base_time= path.travel_time(vehicle.speed) #waktu dasar dr jarak/kecepatan
 
         if curr_time:
             hour, minute, second = curr_time.get_time()
@@ -159,7 +161,7 @@ class Graph:
             else:
                 path.congestion= path.congestion  #normal
 
-         # Menghitung waktu final dengan mempertimbangkan kemacetan dan kondisi jalan      
+         # Menghitung waktu final dengan mempertimbangkan kemacetan dan kondisi jalan
         final_time = base_time / (1 - path.congestion) if path.congestion != 1 else 9999
 
         if not path.condition: #kalo jalan buruk dikalikan 1.5
@@ -306,7 +308,7 @@ class Graph:
                     elif gradientCurrent == 0 and middleDest.x < endDest.x: #Jika dari kanan(kanan turun) terus mau next jalannya lurus sebelah kanan
                         return "Belok Kanan Ke"
                     else:return "Belok Kanan Ke" #Kanan Kanan / Kiri Kanan
-                elif gradientPrev < gradientCurrent: 
+                elif gradientPrev < gradientCurrent:
                     if gradientCurrent == 0 and middleDest.x > endDest.x: #Jika dari kiri terus next(kiri naik) jalannya lurus sebelah kanan
                         return "Belok Kanan Ke"
                     elif gradientCurrent == 0 and middleDest.x < endDest.x: #Jika dari kiri terus next(kiri naik) jalannya lurus sebelah kiri
@@ -318,9 +320,9 @@ class Graph:
         if (startDest.x == endDest.x or startDest.y == endDest.y): return "Lurus Ke"
         elif (startDest.y > endDest.y): return "Belok Kanan Ke"
         elif (startDest.y < endDest.y): return "Belok Kiri Ke"
-        
 
-    def go_from_a_to_b(self, source, destination, vehicle, start_time = Timer()):
+
+    def go_from_a_to_b_waktu_tercepat(self, source, destination, vehicle, start_time = Timer()):
         if type(source) == str and type(destination) == str:  # Cek source & destination apakah ada di graph
             sourceKetemu = False
             destinationKetemu = False
@@ -335,7 +337,7 @@ class Graph:
                 if not sourceKetemu: print("Source tidak ditemukan!")
                 if not destinationKetemu: print("Destination tidak ditemukan!")
 
-        print("===JALUR UTAMA BERDASARKAN WAKTU TERCEPAT===")
+        print("===JALUR BERDASARKAN WAKTU TERCEPAT===")
 
         distances, predecessors = self.shortest_times(source, vehicle, start_time)
 
@@ -419,19 +421,31 @@ class Graph:
         else:
             print(f"\nTotal jarak: {total_distance} M")
 
+        print("FUEL CONSUMED:", fuel_consumed)
         if (fuel_consumed >= 1):
             print(f"Konsumsi bahan bakar: {fuel_consumed:.2f} Liter")
         else:
             print(f"Konsumsi bahan bakar: {fuel_consumed * 1000} mL")
 
-        # ALTERNATIF JALAN TERCEPAT BERDASARKAN JARAK TERDEKAT, BUKAN WAKTU
+
+    def go_from_a_to_b_jarak_terdekat(self, source, destination, vehicle, start_time = Timer()):
+        if type(source) == str and type(destination) == str:  # Cek source & destination apakah ada di graph
+            sourceKetemu = False
+            destinationKetemu = False
+            for vertex in self.graph:
+                if not sourceKetemu and vertex.name.lower() == source.lower():
+                    source = vertex
+                    sourceKetemu = True
+                if not destinationKetemu and vertex.name.lower() == destination.lower():
+                    destination = vertex
+                    destinationKetemu = True
+            if not sourceKetemu or not destinationKetemu:
+                if not sourceKetemu: print("Source tidak ditemukan!")
+                if not destinationKetemu: print("Destination tidak ditemukan!")
 
         distances2, predecessors2 = self.shortest_distances(source, vehicle, start_time)
 
-        if str(Timer(hours=distances2[destination]['waktu'])) == str(Timer(hours=distances[destination]['waktu'])):
-            return
-
-        print("===JALUR ALTERNATIF BERDASARKAN JARAK TERDEKAT===")
+        print("===JALUR BERDASARKAN JARAK TERDEKAT===")
 
         if (distances2[destination] == float('inf')):
             print(f"no valid path from {source.name} to {destination.name}")
@@ -503,13 +517,14 @@ class Graph:
             print("must greater then zero!")
         else:
             time_taken = total_distance / vehicle.speed
-        fuel_consumed = total_distance * vehicle.fuel_efficiency
+        fuel_consumed = (total_distance / 1000) / vehicle.fuel_efficiency
 
         if (total_distance >= 1000):
             print(f"\nTotal jarak: {round(total_distance) / 1000} KM")
         else:
             print(f"\nTotal jarak: {total_distance} M")
 
+        print("FUEL CONSUMED:", fuel_consumed)
         if (fuel_consumed >= 1):
             print(f"Konsumsi bahan bakar: {fuel_consumed:.2f} Liter")
         else:
@@ -522,13 +537,13 @@ class Graph:
                 print(f"{start.name}, {key.name}, {value.distance}, {value.road_name}")
 
     def list_of_locations(self):
-        edges = set()  
+        edges = set()
         for start, end in self.graph.items():
             if start.name not in edges:
-                edges.add(start.name)  
+                edges.add(start.name)
 
             for key in end.keys():
                 if key.name not in edges:
-                    edges.add(key.name)  
+                    edges.add(key.name)
         return edges
 

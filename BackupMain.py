@@ -8,37 +8,173 @@ from Path import Path
 from Timer import Timer
 from Vertex import Vertex
 
+gr = Graph()
 car = Car(50, 10) #Pemakaian 10 KM / Liter
+motor = Motorcycle(40, 10) #Pemakaian 10 KM / Liter
 
 A = Vertex(0, 0, "A")
-B = Vertex(2, 2, "B")
-C = Vertex(5, 2, "C")
-D = Vertex(7, 1, "D")
-E = Vertex(1, -2, "E")
-F = Vertex(4, -4, "F")
-G = Vertex(7, -2, "G")
+B = Vertex(3, 4, "B")
+C = Vertex(5, -5, "C")
+D = Vertex(5, 1, "D")
+E = Vertex(12, 0, "E")
+F = Vertex(8, -5, "F")
+G = Vertex(9, 4, "G")
+H = Vertex(8, -2, "H")
+I = Vertex(0, -5, "I")
 
-pathAB = Path("Alfa Bravo", 1, True, 0.5)
-pathBC = Path("Bravo Charlie", 1, True, 0.5)
-pathCD = Path("Charlie Delta", 1, True, 0.0)
-pathAE = Path("Alfa Echo", 1, True, 0.0)
-pathEF = Path("Echo Foxtrot", 1, True, 0.0)
-pathFG = Path("Foxtrot Golf", 1, True, 0.0)
-pathGD = Path("Golf Delta", 1, True, 0.0)
+pathAB = Path("Jl. Alfa Bravo", 1, True, 0.0)
+pathAC = Path("Jl. Alfa Charlie", 1, True, 0.0)
+pathAD = Path("Jl. Alfa Delta", 1, True, 0.0)
+pathAI = Path("Jl. Alfa India", 3, True, 0.0)
 
-contoh_graph2 = {
-    A : {B : pathAB, E : pathAE},
-    B : {C : pathBC},
-    C : {D : pathCD},
-    D : {},
-    E : {F : pathEF},
-    F : {G : pathFG},
-    G : {D : pathGD}
+pathBG = Path("Jl. Bravo Golf", 1, True, 0.0)
+
+pathCF = Path("Jl. Charlie Foxtrot", 1, True, 0.0)
+pathCI = Path("Jl. Charlie India", 1, True, 0.0)
+
+
+pathDG = Path("Jl. Delta Golf", 1, True, 0.0)
+pathDH = Path("Jl. Delta Hotel", 1, True, 0.0)
+
+pathFE = Path("Jl. Foxtrot Echo", 1, True, 0.0)
+
+pathGE = Path("Jl. Golf Echo", 1, True, 0.0)
+
+pathHC = Path("Jl. Hotel Charlie", 1, True, 0.0)
+pathHE = Path("Jl. Hotel Echo", 1, True, 0.0)
+
+
+# graph = {
+#     A : [B, C, D],
+#     B : [G],
+#     C : [F],
+#     D : [G, H],
+#     E : [],
+#     F : [E],
+#     G : [E],
+#     H : [C, E]
+# }
+
+graph = {
+    A : {B : pathAB, C : pathAC, D : pathAD, I : pathAI},
+    B : {G : pathBG},
+    C : {F : pathCF, I : pathCI},
+    D : {G : pathDG, H : pathDH},
+    E : {},
+    F : {E : pathFE},
+    G : {E : pathGE},
+    H : {C : pathHC, E : pathHE},
+    I : {}
 }
 
-gr = Graph()
-gr.make_graph(contoh_graph2)
-gr.scale_distances(1000)
+gr.make_graph(graph)
+
+# test different start time
+print('\nTESTTTTT PAGIII C ke E')
+morning = Timer(9,30,0)
+print(" Morning - 08:00 ")
+gr.go_from_a_to_b_waktu_tercepat(C, E, motor, morning)
+
+
+print('\nTEST SIANGGG A ke E')
+midday = Timer(14,0,0)
+print(" Mid day - 14:00 ")
+gr.go_from_a_to_b_waktu_tercepat(A, E, car, midday)
+
+# print('\nTEST MALAM')
+#night= datetime.now().replace(hour= 23, minute=15)
+#gr.go_from_a_to_b(A, G, motor, night)
+
+
+# gr.print_graph()
+distances, predecessor = gr.shortest_times(A, car)
+# print(f"distances: {distances}")
+# print(f"predecessor: {predecessor}")
+
+print("===DISTANCES===")
+for key, value in distances.items():
+    print(f"{key.name}: [{value['jarak']}, {Timer(hours=value['waktu'])}]", end = " M\n" if value['jarak'] < 1000 else " KM\n")
+
+
+
+print("===PREDECESSOR===")
+
+for key, value in predecessor.items():
+    print(f"{key.name}: {value['vertex_asal'].name if value['vertex_asal'] else None} {value['path'].road_name if value['path'] else None}")
+
+
+print("Pergi dari A ke I:")
+gr.go_from_a_to_b_waktu_tercepat(A, I, car)
+
+print()
+pagi= Timer(7,30,0)
+distances2, predecessor2 = gr.shortest_times(A, motor, pagi)
+
+
+print("===DISTANCES 2===")
+for key, value in distances2.items():
+    print(f"{key.name}: [{value['jarak']}, {Timer(hours=value['waktu'])}]", end = " M\n" if value['jarak'] < 1000 else " KM\n")
+
+print("===PREDECESSOR 2===")
+
+for key, value in predecessor2.items():
+    print(f"{key.name}: {value['vertex_asal'].name if value['vertex_asal'] else None} {value['path'].road_name if value['path'] else None}")
+
+print("Pergi dari A ke I:")
+night1= Timer(22,30,0)
+gr.go_from_a_to_b_waktu_tercepat(A, I, motor, night1)
+
+
+# format
+# DijkstraAlgorithmOld
+# {'A': 0, 'B': inf, 'C': inf, 'D': inf, 'E': inf, 'F': inf, 'G': inf, 'H': inf}
+# {'A': 0, 'B': 4, 'C': 3, 'D': 5, 'E': 7, 'F': 8, 'G': 9, 'H': 17} {'A': None, 'B': 'A', 'C': 'A', 'D': 'A', 'E': 'B', 'F': 'E', 'G': 'C', 'H': 'F'}
+# Now:
+# {<Vertex.Vertex object at 0x000001C1026E2450>: 0, <Vertex.Vertex object at 0x000001C1026E2090>: 5.0, <Vertex.Vertex object at 0x000001C1026E20D0>: 7.0710678118654755, <Vertex.Vertex object at 0x000001C1042D0910>: 5.0990195135927845, <Vertex.Vertex object at 0x000001C1042D0950>: 13.81379615571165, <Vertex.Vertex object at 0x000001C1042D0B10>: 10.071067811865476, <Vertex.Vertex object at 0x000001C1042D0B50>: 10.099019513592784, <Vertex.Vertex object at 0x000001C1042D0B90>: 9.34166020071207}
+# {<Vertex.Vertex object at 0x000001C1026E2450>: None, <Vertex.Vertex object at 0x000001C1026E2090>: <Vertex.Vertex object at 0x000001C1026E2450>, <Vertex.Vertex object at 0x000001C1026E20D0>: <Vertex.Vertex object at 0x000001C1026E2450>, <Vertex.Vertex object at 0x000001C1042D0910>: <Vertex.Vertex object at 0x000001C1026E2450>, <Vertex.Vertex object at 0x000001C1042D0950>: <Vertex.Vertex object at 0x000001C1042D0B90>, <Vertex.Vertex object at 0x000001C1042D0B10>: <Vertex.Vertex object at 0x000001C1026E20D0>, <Vertex.Vertex object at 0x000001C1042D0B50>: <Vertex.Vertex object at 0x000001C1042D0910>, <Vertex.Vertex object at 0x000001C1042D0B90>: <Vertex.Vertex object at 0x000001C1042D0910>}
+
+#coba coba:
+print()
+print("coba coba")
+
+graf = Graph()
+a = Vertex(0, 0, "a")
+b = Vertex(0, 5, "b")
+c = Vertex(-10, 5, "c")
+d = Vertex(10, 5, "d")
+
+pathab = Path("Jl. Alfa Bravo", 1, True, 0.0)
+pathbc = Path("Jl. Bravo Charlie", 1, True, 0.0)
+pathbd = Path("Jl. Bravo Delta", 1, True, 0.0)
+
+graphh = {
+    a : {b : pathab},
+    b : {a : pathab, c : pathbc, d : pathbd},
+    c : {b : pathbc},
+    d : {b : pathbd},
+}
+graf.make_graph(graphh)
+jarak, predesesor = graf.shortest_times(a, car)
+
+print("===DISTANCES===")
+for key, value in jarak.items():
+    print(f"{key.name}: [{value['jarak']}, {Timer(hours=value['waktu'])}]", end = " M\n" if value['jarak'] < 1000 else " KM\n")
+
+
+
+print("===PREDECESSOR===")
+
+for key, value in predesesor.items():
+    print(f"{key.name}: {value['vertex_asal'].name if value['vertex_asal'] else None} {value['path'].road_name if value['path'] else None}")
+
+#Arah kiri kanannya masih blm bener
+print("Pergi dari A ke C:")
+graf.go_from_a_to_b_waktu_tercepat(a, c, car)
+print()
+print("Pergi dari A ke D:")
+graf.go_from_a_to_b_waktu_tercepat(a, d, car)
+
+
 
 def print_mainPage():
     print("\n================== Main Page ==================")
@@ -208,10 +344,10 @@ while choice!=0:
             input2 = get_valid_input("int", prompt1, {1, 2, 3, 4, 5, 6, 0, -1})
             
             if input2 == 1:
-                gr.go_from_a_to_b_jarak_terdekat(start, end, current_vehicle)
+                gr.go_from_a_to_b_waktu_tercepat(start, end, current_vehicle)
 
             elif input2 == 2:
-                gr.go_from_a_to_b_waktu_tercepat(start, end, current_vehicle)
+                gr.go_from_a_to_b_jarak_terdekat(start, end, current_vehicle)
             
             elif input2 == 4:
                 start = get_valid_input("string", "\nWhere do you want to start your journey? ", vertexes)

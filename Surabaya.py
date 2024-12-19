@@ -142,7 +142,7 @@ for key, value in predecessor.items():
 
 print()
 print("Pergi dari A ke F:")
-gr.go_from_a_to_b(gerbang_tol_satelit, exit_tol_waru, motor)
+gr.go_from_a_to_b_waktu_tercepat(gerbang_tol_satelit, exit_tol_waru, motor)
 
 
 
