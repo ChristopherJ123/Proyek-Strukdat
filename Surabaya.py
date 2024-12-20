@@ -6,8 +6,8 @@ from Walking import Walking
 from Car import Car
 from Motorcycle import Motorcycle
 
-import networkx as nx
-import matplotlib.pyplot as plt
+# import networkx as nx
+# import matplotlib.pyplot as plt
 
 gr = Graph()
 car = Car(50, 10)
@@ -128,6 +128,7 @@ graph = {
 }
 
 gr.make_graph(graph)
+print("Pergi dari pakuwon_mall ke taman_bungkul:")
 distances, predecessor = gr.shortest_times(pakuwon_mall, car)
 print("===DISTANCES===")
 for key, value in distances.items():
@@ -140,8 +141,23 @@ for key, value in predecessor.items():
     print(f"{key.name}: {value['vertex_asal'].name if value['vertex_asal'] else None} {value['path'].road_name if value['path'] else None}")
 
 print()
-print("Pergi dari pakuwon_mall ke taman_bungkul:")
-gr.go_from_a_to_b_waktu_tercepat(pakuwon_mall, taman_bungkul, motor)
+
+gr.go_from_a_to_b_waktu_tercepat(pakuwon_mall, taman_bungkul, car)
+
+distances, predecessor = gr.shortest_times(pakuwon_mall, motor)
+
+print("===DISTANCES===")
+for key, value in distances.items():
+    print(f"{key.name}: [{value['jarak']}, {Timer(hours=value['waktu'])}]", end = " M\n" if value['jarak'] < 1000 else str(value['jarak']/1000) + " KM\n")
+
+print()
+print("===PREDECESSOR===")
+
+for key, value in predecessor.items():
+    print(f"{key.name}: {value['vertex_asal'].name if value['vertex_asal'] else None} {value['path'].road_name if value['path'] else None}")
+
+print()
+
 gr.go_from_a_to_b_jarak_terdekat(pakuwon_mall, taman_bungkul, motor)
 
 
@@ -149,20 +165,20 @@ gr.go_from_a_to_b_jarak_terdekat(pakuwon_mall, taman_bungkul, motor)
 #29,34,32 jalan
 
 # Draw the graph
-G = nx.DiGraph()
-for v, e in gr.graph.items():
-    G.add_node(v.name, pos=(v.x, v.y))
-    for neighbour, path in e.items():
-        G.add_edge(v.name, neighbour.name, label=round(path.distance))
+# G = nx.DiGraph()
+# for v, e in gr.graph.items():
+#     G.add_node(v.name, pos=(v.x, v.y))
+#     for neighbour, path in e.items():
+#         G.add_edge(v.name, neighbour.name, label=round(path.distance))
 
-positions = nx.get_node_attributes(G, 'pos')
+# positions = nx.get_node_attributes(G, 'pos')
 
-plt.figure(figsize=(20, 16))
-nx.draw(G, positions, with_labels=True, node_size=500, node_color='skyblue', font_weight='bold', font_size=7, arrowsize=20)
+# plt.figure(figsize=(20, 16))
+# nx.draw(G, positions, with_labels=True, node_size=500, node_color='skyblue', font_weight='bold', font_size=7, arrowsize=20)
 
-# Draw edge labels
-edge_labels = nx.get_edge_attributes(G, 'label')
-nx.draw_networkx_edge_labels(G, positions, edge_labels=edge_labels, font_size=8)
+# # Draw edge labels
+# edge_labels = nx.get_edge_attributes(G, 'label')
+# nx.draw_networkx_edge_labels(G, positions, edge_labels=edge_labels, font_size=8)
 
-plt.title("Graph Visualization", fontsize=9)
-plt.show()
+# plt.title("Graph Visualization", fontsize=9)
+# plt.show()
