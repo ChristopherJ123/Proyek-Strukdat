@@ -55,7 +55,7 @@ class Graph:
 
     def find_vertex(self, vertex_name):
         for vertex in self.graph:
-            if (vertex.name.lower() == vertex_name.lower()):
+            if (str.lower(vertex.name) == str.lower(vertex_name)):
                 # print("Found vertex.")
                 return vertex
         # print("Vertex not found.")
@@ -124,7 +124,7 @@ class Graph:
     def edit_path(self, roadName, change):
         for start, end in self.graph.items():
             for key, value in end.items():
-                if value.road_name.lower() == roadName.lower():
+                if str.lower(value.road_name) == str.lower(roadName):
                     if change == 1:
                        value.road_name = self.get_valid_input("string", "Please enter the correct road name: ")
                        print("\nRoad information updated successfully.")
