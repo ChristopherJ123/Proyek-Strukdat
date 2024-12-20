@@ -15,18 +15,18 @@ motor = Motorcycle(40, 10)
 
 pakuwon_mall = Vertex(0,0,"Pakuwon Mall")
 lenmarc_mall = Vertex(650,410,"Lenmarc Mall")
-persimpangan_HRMuhammad_Jonosewojo = Vertex(880,850, "Persimpangan HR Muhammad - Jonosewojo")
+persimpangan_HRMuhammad_Jonosewojo = Vertex(880,850, "Persimpangan HR Muhammad - Jonosewojo", True)
 papaya = Vertex(760,1030,"Papaya")
 pasar_modern = Vertex(1560,1440,"Pasar Modern")
 vasa_hotel = Vertex(2510,320,"Vasa Hotel")
-bundaran_satelit = Vertex(3010,80,"Bundaran Satelit")
+bundaran_satelit = Vertex(3010,80,"Bundaran Satelit", True)
 gerbang_tol_satelit = Vertex(2630,-170,"Gerbang Tol Satelit")
 persimpangan_mayjenSungkono_rayaDukuhKupang = Vertex(4020,-140,"Persimpangan Mayjen Sungkono-Raya Dukuh Kupang")
 shangrila_hotel = Vertex(4220,-230,"Shangrila Hotel")
 islamic_centre = Vertex(4190,290,"Islamic Centre")
 ciputra_world = Vertex(4790,-320,"Ciputra World")
 rumah_sakit_mayapada = Vertex(5610,-440, "Rumah Sakit Mayapada")
-persimpangan_adityawarman_indragiri = Vertex(5850,-440,"Persimpangan Adityawarman-Indragiri")
+persimpangan_adityawarman_indragiri = Vertex(5850,-440,"Persimpangan Adityawarman-Indragiri", True)
 persimpangan_girilaya_diponegoro = Vertex(5410,910,"Persimpangan Girilaya-Diponegoro")
 persimpangan_indragiri_diponegoro = Vertex(6320,560,"Persimpangan Indragiri-Diponegoro")
 gor_pancasila = Vertex(6060,200,"GOR Pancasila")
@@ -128,7 +128,7 @@ graph = {
 }
 
 gr.make_graph(graph)
-distances, predecessor = gr.shortest_times(gerbang_tol_satelit, motor)
+distances, predecessor = gr.shortest_times(pakuwon_mall, car)
 print("===DISTANCES===")
 for key, value in distances.items():
     print(f"{key.name}: [{value['jarak']}, {Timer(hours=value['waktu'])}]", end = " M\n" if value['jarak'] < 1000 else " KM\n")
@@ -141,7 +141,7 @@ for key, value in predecessor.items():
 
 print()
 print("Pergi dari A ke F:")
-gr.go_from_a_to_b_waktu_tercepat(gerbang_tol_satelit, exit_tol_waru, motor)
+gr.go_from_a_to_b_waktu_tercepat(pakuwon_mall, taman_bungkul, motor)
 
 
 
