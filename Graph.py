@@ -9,7 +9,7 @@ class Graph:
         self.graph = {}
         self.scale = scale
 
-    def make_graph(self, graph): #Christopher Joshua
+    def make_graph(self, graph): #Evelyn
         for start, visit in graph.items():
             if start not in self.graph:
                 self.graph[start] = {}
