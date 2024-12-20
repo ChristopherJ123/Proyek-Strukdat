@@ -71,6 +71,7 @@ def print_mapPage():
     print("2. Delete existing location")
     print("3. Add new road")
     print("4. Update road information")
+    print("5. Display map")
     print("0. Exit")
     print("-1. Back to the main page")
 
@@ -155,10 +156,11 @@ while choice!=0:
     if choice == 1 :
         while choice == 1 :
             print_mapPage()
-            input1 = get_valid_input("int", prompt1, {1, 2, 3, 4, 0, -1})
+            input1 = get_valid_input("int", prompt1, {1, 2, 3, 4, 5, 0, -1})
+            print()
             
             if input1 == 1:
-                print("\nTo add a new location, please input the following details.")
+                print("To add a new location, please input the following details.")
                 vertex_name = input("Location name: ")
                 x = get_valid_input("int", "X-coordinates of the location: ")
                 y = get_valid_input("int", "Y-coordinates of the location: ")
@@ -167,12 +169,12 @@ while choice!=0:
                 gr.add_vertex(vertex_new)
 
             elif input1 == 2:
-                print("\nTo delete an existing location, please input the following details.")
+                print("To delete an existing location, please input the following details.")
                 vertex_name = get_valid_input("string", "Location name: ")
                 gr.delete_vertex(vertex_name)
 
             elif input1 == 3:
-                print("\nTo create a new path, please input the following details.")
+                print("To create a new path, please input the following details.")
                 vertexes = gr.list_of_locations()
                 start = get_valid_input("string", "Where is the starting point of the path? ", vertexes)
                 end = get_valid_input("string", "To where does the path lead to? ", vertexes)
@@ -181,20 +183,24 @@ while choice!=0:
                 gr.add_edge(start, end, pathXX)
 
             elif input1 == 4:
-                print("\nTo update road information, please input the following details.")
+                print("To update road information, please input the following details.")
                 road_name = get_valid_input("string", "What is the name of the road? ")
                 print("Of the following details, which one would you like to change?\n1. Road Name\n2. Road Type\n3. Road Condition\n4. Road Congestion Rate")
                 road_update = get_valid_input("int", "Please enter your choice here (You may only choose one):  ", {1, 2, 3, 4})
 
                 gr.edit_path(road_name, road_update)
+                
+            elif input1 == 5:
+                print("Here is the current map: ")
+                gr.print_graph()
 
             elif input1 == 0:
                 choice = 0
-                print("\nExiting...")
+                print("Exiting...")
                 break
             elif input1 == -1:
                 choice = -1
-                print("\nGoing back into the main page...")
+                print("Going back into the main page...")
             else :
                 print("Input outside of choices. Please try again.")
 
@@ -206,7 +212,7 @@ while choice!=0:
         while choice == 2 :
             print_optimalPathPage()
             input2 = get_valid_input("int", prompt1, {1, 2, 3, 4, 5, 0, -1})
-            
+            print()
             if input2 == 1:
                 gr.go_from_a_to_b_jarak_terdekat(start, end, current_vehicle)
 
@@ -214,13 +220,13 @@ while choice!=0:
                 gr.go_from_a_to_b_waktu_tercepat(start, end, current_vehicle)
             
             elif input2 == 3:
-                start = get_valid_input("string", "\nWhere do you want to start your journey? ", vertexes)
+                start = get_valid_input("string", "Where do you want to start your journey? ", vertexes)
 
             elif input2 == 4:
                 end = get_valid_input("string", "Where do you want to go? ", vertexes)
 
             elif input2 == 5:
-                print(f"\n Your current vehicle is a {current_vehicle.vehicle_type}. What would you like to change it into?")
+                print(f"Your current vehicle is a {current_vehicle.vehicle_type}. What would you like to change it into?")
                 print("The choices are : Car, Motorcycle, Bus, Bicycle, Walking")
                 vehicle_list = {"Car", "Motorcycle", "Bus", "Bicycle", "Walking"}
                 inp_vehicle = get_valid_input("string", prompt1, vehicle_list)
@@ -240,11 +246,11 @@ while choice!=0:
 
             elif input2 == 0:
                 choice = 0
-                print("\nExiting...")
+                print("Exiting...")
                 break
             elif input2 == -1:
                 choice = -1
-                print("\nGoing back into the main page...")
+                print("Going back into the main page...")
             else :
                 print("Input outside of choices. Please try again.")
         
