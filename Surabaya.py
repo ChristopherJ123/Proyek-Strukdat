@@ -6,8 +6,8 @@ from Walking import Walking
 from Car import Car
 from Motorcycle import Motorcycle
 
-import networkx as nx
-import matplotlib.pyplot as plt
+# import networkx as nx
+# import matplotlib.pyplot as plt
 
 gr = Graph()
 car = Car(50, 10)
@@ -131,7 +131,7 @@ gr.make_graph(graph)
 distances, predecessor = gr.shortest_times(pakuwon_mall, car)
 print("===DISTANCES===")
 for key, value in distances.items():
-    print(f"{key.name}: [{value['jarak']}, {Timer(hours=value['waktu'])}]", end = " M\n" if value['jarak'] < 1000 else " KM\n")
+    print(f"{key.name}: [{value['jarak']}, {Timer(hours=value['waktu'])}]", end = " M\n" if value['jarak'] < 1000 else str(value['jarak']/1000) + " KM\n")
 
 print()
 print("===PREDECESSOR===")
