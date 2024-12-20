@@ -19,7 +19,8 @@ class Graph:
                 self.graph[start][end].set_distance((math.sqrt(pow(abs(start.x - end.x), 2) + pow(abs(start.y - end.y), 2))) * self.scale)
 
         # Tambah congestion bagi edge yang menyambung ke sebuah vertex yang memiliki lampu lalu lintas dengan sekian.
-        for start, visit in self.graph.items():
+
+        for start, visit in self.graph.items(): #Marco
             for vertex_tujuan, path in visit.items():
                 if vertex_tujuan.has_lampu_lalu_lintas:
                     path.congestion = min(path.congestion + (1 - path.congestion) * 0.3, 1.0)  # menambah kemacetan

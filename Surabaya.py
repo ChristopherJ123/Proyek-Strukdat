@@ -5,6 +5,7 @@ from Vertex import Vertex
 from Walking import Walking
 from Car import Car
 from Motorcycle import Motorcycle
+from Bus import Bus
 
 import networkx as nx
 import matplotlib.pyplot as plt
@@ -14,6 +15,7 @@ import matplotlib.pyplot as plt
 gr = Graph()
 car = Car(50, 10)
 motor = Motorcycle(40, 10)
+bus = Bus(40, 10)
 
 pakuwon_mall = Vertex(0,0,"Pakuwon Mall")
 lenmarc_mall = Vertex(650,410,"Lenmarc Mall")
@@ -91,6 +93,7 @@ raya_geluran = Path("Raya Geluran",1,True,0.0)
 gang_1 = Path("Gang 1", 3, True, 0.0)
 gang_2 = Path("Gang 2", 3, True, 0.0)
 
+# Semua edge berdasarkan jalan di dunia nyata kecuali gang_1 dan gang_2 karena sulit untuk mencari gang yang hanya bisa dilewati oleh motor dan pejalan kaki di Surabaya
 
 graph = {
     pakuwon_mall : {lenmarc_mall : mayjen_jonosewojo},
@@ -130,7 +133,7 @@ graph = {
 }
 
 gr.make_graph(graph)
-print("Pergi dari pakuwon_mall ke taman_bungkul:")
+print("Pergi dari pakuwon_mall ke taman_bungkul pakai mobil:")
 distances, predecessor = gr.shortest_times(pakuwon_mall, car)
 print("===DISTANCES===")
 for key, value in distances.items():
@@ -145,7 +148,9 @@ for key, value in predecessor.items():
 print()
 
 gr.go_from_a_to_b_waktu_tercepat(pakuwon_mall, taman_bungkul, car)
+print()
 
+print("Pergi dari pakuwon_mall ke taman_bungkul pakai motor:")
 distances, predecessor = gr.shortest_times(pakuwon_mall, motor)
 
 print("===DISTANCES===")
@@ -159,14 +164,31 @@ for key, value in predecessor.items():
     print(f"{key.name}: {value['vertex_asal'].name if value['vertex_asal'] else None} {value['path'].road_name if value['path'] else None}")
 
 print()
-
 gr.go_from_a_to_b_jarak_terdekat(pakuwon_mall, taman_bungkul, motor)
+print()
+
+print("Pergi dari lenmarc ke pcu pakai bus petra:")
+distances, predecessor = gr.shortest_times(lenmarc_mall, bus)
+print("===DISTANCES===")
+for key, value in distances.items():
+    print(f"{key.name}: [{value['jarak']}, {Timer(hours=value['waktu'])}]", end = " M\n" if value['jarak'] < 1000 else str(value['jarak']/1000) + " KM\n")
+
+print()
+print("===PREDECESSOR===")
+
+for key, value in predecessor.items():
+    print(f"{key.name}: {value['vertex_asal'].name if value['vertex_asal'] else None} {value['path'].road_name if value['path'] else None}")
+
+print()
+
+gr.go_from_a_to_b_jarak_terdekat(lenmarc_mall, pcu, bus)
+print()
 
 
 
-#29,34,32 jalan
 
-# Draw the graph
+
+# Ini untuk gambar graphnya
 # G = nx.DiGraph()
 # for v, e in gr.graph.items():
 #     G.add_node(v.name, pos=(v.x, v.y))
