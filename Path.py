@@ -1,4 +1,4 @@
-class Path:
+class Path: #Christopher Joshua
     def __init__(self, road_name ,road_type, condition, congestion=0.0):
         """
         :param road_name: Nama dari jalan, misalnya 'Jl.Siwalankerto'.

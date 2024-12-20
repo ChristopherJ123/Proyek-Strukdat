@@ -9,7 +9,7 @@ class Graph:
         self.graph = {}
         self.scale = scale
 
-    def make_graph(self, graph):
+    def make_graph(self, graph): #Christopher Joshua
         for start, visit in graph.items():
             if start not in self.graph:
                 self.graph[start] = {}
@@ -24,7 +24,7 @@ class Graph:
                 if vertex_tujuan.has_lampu_lalu_lintas:
                     path.congestion = min(path.congestion + (1 - path.congestion) * 0.3, 1.0)  # menambah kemacetan
 
-    def scale_distances(self, multitude_of):
+    def scale_distances(self, multitude_of): #Christopher Joshua
         """
         Scale the distance of each edge with the multitude of. Jangan lupa di make_graph dulu.
         :param multitude_of: multitude
@@ -34,11 +34,11 @@ class Graph:
             for vertex, path in visit.items():
                 path.distance *= multitude_of
 
-    def add_vertex(self, vertex):
+    def add_vertex(self, vertex): #Evelyn
         self.graph[vertex] = {}
         print("New location added successfully.")
 
-    def delete_vertex(self, vertex_name):
+    def delete_vertex(self, vertex_name): #Evelyn
         vertex_to_delete = self.find_vertex(vertex_name)
 
         if vertex_to_delete is None:
@@ -53,7 +53,7 @@ class Graph:
                 # print(f"Removed edge from {start.name} to {vertex_to_delete.name}")
         print("\nLocation deleted successfully.")
 
-    def find_vertex(self, vertex_name):
+    def find_vertex(self, vertex_name): #Evelyn
         for vertex in self.graph:
             if (vertex.name.lower() == vertex_name.lower()):
                 # print("Found vertex.")
@@ -61,7 +61,7 @@ class Graph:
         # print("Vertex not found.")
         return None
 
-    def add_edge(self, vertex1_name, vertex2_name, edge):
+    def add_edge(self, vertex1_name, vertex2_name, edge): #Evelyn
         vertex1 = self.find_vertex(vertex1_name)
         vertex2 = self.find_vertex(vertex2_name)
 
@@ -75,7 +75,7 @@ class Graph:
         self.graph[vertex1][vertex2].set_distance((math.sqrt(pow(abs(vertex1.x - vertex2.x), 2) + pow(abs(vertex1.y - vertex2.y), 2))) * self.scale)
         print("\nNew path added successfully.")
 
-    def get_valid_input(self, prompt_type, prompt, choices=None):
+    def get_valid_input(self, prompt_type, prompt, choices=None): #Evelyn
         while True:
             try:
                 if prompt_type == "int":
@@ -121,7 +121,7 @@ class Graph:
             except ValueError:
                 print(f"Error: Invalid input type. Expected a {prompt_type}. Please try again.")
 
-    def edit_path(self, roadName, change):
+    def edit_path(self, roadName, change): #Evelyn
         for start, end in self.graph.items():
             for key, value in end.items():
                 if value.road_name.lower() == roadName.lower():
@@ -147,8 +147,9 @@ class Graph:
         print("Sorry, we don't seem to have a road with that name.")
 
     # hitung final_time edge dgn mempertimbangakn kemacetan, jalan, speed, jam brngkt.
-    def calculate_edge(self, path, vehicle, curr_time=Timer()):
+    def calculate_edge(self, path, vehicle, curr_time=Timer()): 
         base_time= path.travel_time(vehicle.speed) #waktu dasar dr jarak/kecepatan
+        #Christopher Joshua
 
         if curr_time:
             hour, minute, second = curr_time.get_time()
@@ -170,7 +171,7 @@ class Graph:
         return final_time
 
 
-    def shortest_times(self, source, vehicle, start_time = Timer()):
+    def shortest_times(self, source, vehicle, start_time = Timer()): #Christopher Joshua
         # Dijkstra Algorithm
         # Initialize the values of all nodes with infinity
         distances = {vertex: {'jarak' : float("inf"), 'waktu' : float("inf")} for vertex in self.graph}
@@ -220,7 +221,7 @@ class Graph:
         return distances, predecessors
 
     def shortest_distances(self, source, vehicle, start_time = Timer()): # Jalan alternatif yang jarak terbendek, bukan waktu tersingkat
-        # Dijkstra Algorithm
+        # Dijkstra Algorithm: #Christopher Joshua
         # Initialize the values of all nodes with infinity
         distances = {vertex: {'jarak' : float("inf"), 'waktu' : float("inf")} for vertex in self.graph}
         distances[source]['jarak'] = 0  # Set the source value to 0
@@ -268,7 +269,7 @@ class Graph:
 
         return distances, predecessors
 
-    def getNextDirection(self, startDest, middleDest, endDest):
+    def getNextDirection(self, startDest, middleDest, endDest): #Christopher Louis
 
         if (startDest.x == middleDest.x): #Jika Path Sebelumnya No Gradient (Jalan sebelumnya lurus)
             if (startDest.y > middleDest.y): #POV Top To Bottom
@@ -303,26 +304,27 @@ class Graph:
                 elif (middleDest.y < endDest.y): return "Belok Kiri Ke"
             else:
                 if gradientPrev > gradientCurrent:
-                    if gradientCurrent == 0 and middleDest.x > endDest.x: #Jika dari kanan(kanan turun) terus mau next jalannya lurus sebelah kiri
+                    if gradientCurrent == 0 and middleDest.x > endDest.x:
                         return "Belok Kiri Ke"
-                    elif gradientCurrent == 0 and middleDest.x < endDest.x: #Jika dari kanan(kanan turun) terus mau next jalannya lurus sebelah kanan
+                    elif gradientCurrent == 0 and middleDest.x < endDest.x:
                         return "Belok Kanan Ke"
-                    else:return "Belok Kanan Ke" #Kanan Kanan / Kiri Kanan
+                    else:return "Belok Kanan Ke"
                 elif gradientPrev < gradientCurrent:
-                    if gradientCurrent == 0 and middleDest.x > endDest.x: #Jika dari kiri terus next(kiri naik) jalannya lurus sebelah kanan
+                    if gradientCurrent == 0 and middleDest.x > endDest.x:
                         return "Belok Kanan Ke"
-                    elif gradientCurrent == 0 and middleDest.x < endDest.x: #Jika dari kiri terus next(kiri naik) jalannya lurus sebelah kiri
+                    elif gradientCurrent == 0 and middleDest.x < endDest.x:
                         return "Belok Kiri Ke"
-                    else:return "Belok Kiri Ke" #Kiri Kiri / Kanan Kiri
-                else: return "Lurus Ke" #Lurus Lurus
+                    else:return "Belok Kiri Ke" 
+                else: return "Lurus Ke" 
 
-    def getFirstDirection(self, startDest, endDest):
+    def getFirstDirection(self, startDest, endDest): #Christopher Louis
         if (startDest.x == endDest.x or startDest.y == endDest.y): return "Lurus Ke"
         elif (startDest.y > endDest.y): return "Belok Kanan Ke"
         elif (startDest.y < endDest.y): return "Belok Kiri Ke"
 
 
     def go_from_a_to_b_waktu_tercepat(self, source, destination, vehicle, start_time = Timer()):
+        # Jesica
         if type(source) == str and type(destination) == str:  # Cek source & destination apakah ada di graph
             sourceKetemu = False
             destinationKetemu = False
@@ -414,7 +416,7 @@ class Graph:
             #Fuel Efficiency = ... KM / liter
             #Karena total_distance mainly M kita ubah ke KM dulu trus bagi dengan fuel efficiency buat dapet
             #Konsumsinya berapa banyak
-        fuel_consumed = (total_distance / 1000) / vehicle.fuel_efficiency
+        fuel_consumed = (total_distance / 1000) / vehicle.fuel_efficiency #Christopher Louis
 
         if(total_distance >= 1000):
             print(f"\nTotal jarak: {round(total_distance) / 1000} KM")
@@ -428,6 +430,7 @@ class Graph:
 
 
     def go_from_a_to_b_jarak_terdekat(self, source, destination, vehicle, start_time = Timer()):
+        # Jesica
         if type(source) == str and type(destination) == str:  # Cek source & destination apakah ada di graph
             sourceKetemu = False
             destinationKetemu = False
@@ -529,12 +532,12 @@ class Graph:
             print(f"Konsumsi bahan bakar: {fuel_consumed * 1000:.0f} mL")
 
 
-    def print_graph(self):
+    def print_graph(self): #Christopher Joshua
         for start, end in self.graph.items():
             for key, value in end.items():
                 print(f"{start.name}, {key.name}, distance:{value.distance} M, road_name:{value.road_name}, road_type:{value.road_type}, condition:{value.condition}, congestion:{value.congestion}")
 
-    def list_of_locations(self):
+    def list_of_locations(self): #Christopher Joshua
         edges = set()
         for start, end in self.graph.items():
             if start.name not in edges:

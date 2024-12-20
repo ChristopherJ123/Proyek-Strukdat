@@ -1,6 +1,6 @@
 from Transportation import Transportation
 
-class Motorcycle(Transportation):
+class Motorcycle(Transportation): # Marco
     def __init__(self, speed, fuel_efficiency):
         super().__init__(speed, {1, 3}, fuel_efficiency)
         self.vehicle_type = "Motorcycle"

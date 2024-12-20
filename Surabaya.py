@@ -6,8 +6,10 @@ from Walking import Walking
 from Car import Car
 from Motorcycle import Motorcycle
 
-# import networkx as nx
-# import matplotlib.pyplot as plt
+import networkx as nx
+import matplotlib.pyplot as plt
+
+#Marco
 
 gr = Graph()
 car = Car(50, 10)

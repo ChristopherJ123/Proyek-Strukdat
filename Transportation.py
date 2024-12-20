@@ -1,4 +1,4 @@
-class Transportation:
+class Transportation: # Marco
     def __init__(self, speed, road_compatibility, fuel_efficiency):
         self.speed = speed
         self.road_compatibility = road_compatibility

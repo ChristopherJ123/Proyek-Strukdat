@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-class Timer:
+class Timer: # Jesica
     def __init__(self, hours = 0, minutes = 0, seconds = 0):
         self.duration = timedelta()
         if hours == float('inf') or minutes == float('inf') or seconds == float('inf'):

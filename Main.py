@@ -9,51 +9,38 @@ from Timer import Timer
 from Vertex import Vertex
 
 car = Car(50, 10) #Pemakaian 10 KM / Liter
-motor = Motorcycle(40, 10) #Pemakaian 10 KM / Liter
 
 A = Vertex(0, 0, "A")
-B = Vertex(3, 4, "B")
-C = Vertex(5, -5, "C")
-D = Vertex(5, 1, "D")
-E = Vertex(12, 0, "E")
-F = Vertex(8, -5, "F")
-G = Vertex(9, 4, "G")
-H = Vertex(8, -2, "H")
+B = Vertex(2, 2, "B")
+C = Vertex(5, 2, "C")
+D = Vertex(7, 1, "D")
+E = Vertex(1, -2, "E")
+F = Vertex(4, -4, "F")
+G = Vertex(7, -2, "G")
 
-pathAB = Path("Jl. Alfa Bravo", 1, True, 0.0)
-pathAC = Path("Jl. Alfa Charlie", 1, True, 0.0)
-pathAD = Path("Jl. Alfa Delta", 1, True, 0.0)
+pathAB = Path("Alfa Bravo", 1, True, 0.5)
+pathBC = Path("Bravo Charlie", 1, True, 0.5)
+pathCD = Path("Charlie Delta", 1, True, 0.0)
+pathAE = Path("Alfa Echo", 1, True, 0.0)
+pathEF = Path("Echo Foxtrot", 1, True, 0.0)
+pathFG = Path("Foxtrot Golf", 1, True, 0.0)
+pathGD = Path("Golf Delta", 1, True, 0.0)
 
-pathBG = Path("Jl. Bravo Golf", 1, True, 0.0)
-
-pathCF = Path("Jl. Charlie Foxtrot", 1, True, 0.0)
-
-pathDG = Path("Jl. Delta Golf", 1, True, 0.0)
-pathDH = Path("Jl. Delta Hotel", 1, True, 0.0)
-
-pathFE = Path("Jl. Foxtrot Echo", 1, True, 0.0)
-
-pathGE = Path("Jl. Golf Echo", 1, True, 0.0)
-
-pathHC = Path("Jl. Hotel Charlie", 1, True, 0.0)
-pathHE = Path("Jl. Hotel Echo", 1, True, 0.0)
-
-graph = {
-    A : {B : pathAB, C : pathAC, D : pathAD},
-    B : {G : pathBG},
-    C : {F : pathCF},
-    D : {G : pathDG, H : pathDH},
-    E : {},
-    F : {E : pathFE},
-    G : {E : pathGE},
-    H : {C : pathHC, E : pathHE},
+contoh_graph2 = {
+    A : {B : pathAB, E : pathAE},
+    B : {C : pathBC},
+    C : {D : pathCD},
+    D : {},
+    E : {F : pathEF},
+    F : {G : pathFG},
+    G : {D : pathGD}
 }
 
 gr = Graph()
-gr.make_graph(graph)
+gr.make_graph(contoh_graph2)
 gr.scale_distances(1000)
 
-def print_mainPage():
+def print_mainPage(): #Evelyn
     print("\n================== Main Page ==================")
     print("Choices: ")
     print("1. Edit map")
@@ -61,7 +48,7 @@ def print_mainPage():
     print("3. Display map")
     print("0. Exit")
 
-def print_optimalPathPage():
+def print_optimalPathPage(): #Evelyn
     print("\n============== Optimal Path Page ==============")
     print("Start point: ", start)
     print("Destination point: ", end)
@@ -77,7 +64,7 @@ def print_optimalPathPage():
     print("0. Exit")
     print("-1. Back to the main page")
 
-def print_mapPage():
+def print_mapPage(): #Evelyn
     print("\n=============== Map Editor Page ===============")
     print("Choices: ")
     print("1. Add new location") 
@@ -88,7 +75,7 @@ def print_mapPage():
     print("0. Exit")
     print("-1. Back to the main page")
 
-def createPath():
+def createPath(): #Evelyn
     road_name = get_valid_input("string", "\nWhat is the name of the road? ")
 
     print("Tipe dari jalan: \n'1 : Jalan biasa', '2 : Jalan Tol', '3 : Jalan sempit/gang', '4 : Jalan pejalan kaki'.")
@@ -105,7 +92,7 @@ def createPath():
     return Path(road_name, road_type, road_condition, road_congestion)
 
 
-def get_valid_input(prompt_type, prompt, choices=None):
+def get_valid_input(prompt_type, prompt, choices=None): #Evelyn
     while True:
         try:
             if prompt_type == "int":
