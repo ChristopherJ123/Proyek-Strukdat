@@ -140,8 +140,9 @@ for key, value in predecessor.items():
     print(f"{key.name}: {value['vertex_asal'].name if value['vertex_asal'] else None} {value['path'].road_name if value['path'] else None}")
 
 print()
-print("Pergi dari A ke F:")
+print("Pergi dari pakuwon_mall ke taman_bungkul:")
 gr.go_from_a_to_b_waktu_tercepat(pakuwon_mall, taman_bungkul, motor)
+gr.go_from_a_to_b_jarak_terdekat(pakuwon_mall, taman_bungkul, motor)
 
 
 

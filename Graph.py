@@ -7,7 +7,7 @@ from Timer import Timer
 class Graph:
     def __init__(self, scale=1.0):
         self.graph = {}
-        self.scale = 1.0
+        self.scale = scale
 
     def make_graph(self, graph):
         for start, visit in graph.items():
@@ -175,7 +175,7 @@ class Graph:
         # Initialize the values of all nodes with infinity
         distances = {vertex: {'jarak' : float("inf"), 'waktu' : float("inf")} for vertex in self.graph}
         distances[source]['jarak'] = 0  # Set the source value to 0
-        distances[source]['waktu'] = start_time.get_hours()
+        distances[source]['waktu'] = 0
 
         # Initialize priority queue
         pq = [(0, 0, source)] # [(time satuan jam, distance satuan m, vertex)] priority queue nya berdasarkan time terkecil.
@@ -212,8 +212,8 @@ class Graph:
         predecessors = {vertex: {'vertex_asal' : None, 'path' : None} for vertex in self.graph}
         for vertex, distance in distances.items():
             for neighbour_vertex, neighbour_path in self.graph[vertex].items():
-                if (distance['jarak'] + neighbour_path.distance == distances[neighbour_vertex]['jarak']
-                        and distances[neighbour_vertex]['jarak'] != float('inf') and vehicle.can_traverse(neighbour_path.road_type)):
+                if (distance['waktu'] + neighbour_path.travel_time(vehicle.speed) == distances[neighbour_vertex]['waktu']
+                        and distances[neighbour_vertex]['waktu'] != float('inf') and vehicle.can_traverse(neighbour_path.road_type)):
                     predecessors[neighbour_vertex]['vertex_asal'] = vertex
                     predecessors[neighbour_vertex]['path'] = neighbour_path
 

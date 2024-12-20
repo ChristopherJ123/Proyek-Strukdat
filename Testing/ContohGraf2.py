@@ -42,7 +42,6 @@ for key, value in distances.items():
 
 
 print("===PREDECESSOR===")
-
 for key, value in predecessors.items():
     print(f"{key.name}: {value['vertex_asal'].name if value['vertex_asal'] else None} {value['path'].road_name if value['path'] else None}")
 
