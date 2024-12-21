@@ -11,33 +11,39 @@ from Vertex import Vertex
 car = Car(50, 10) #Pemakaian 10 KM / Liter
 
 A = Vertex(0, 0, "A")
-B = Vertex(2, 2, "B")
-C = Vertex(5, 2, "C")
-D = Vertex(7, 1, "D")
-E = Vertex(1, -2, "E")
-F = Vertex(4, -4, "F")
-G = Vertex(7, -2, "G")
+B = Vertex(3, 4, "B")
+C = Vertex(5, -5, "C")
+D = Vertex(5, 1, "D")
+E = Vertex(12, 0, "E")
+F = Vertex(8, -5, "F")
+G = Vertex(9, 4, "G")
+H = Vertex(8, -2, "H")
 
-pathAB = Path("Alfa Bravo", 1, True, 0.5)
-pathBC = Path("Bravo Charlie", 1, True, 0.5)
-pathCD = Path("Charlie Delta", 1, True, 0.0)
-pathAE = Path("Alfa Echo", 1, True, 0.0)
-pathEF = Path("Echo Foxtrot", 1, True, 0.0)
-pathFG = Path("Foxtrot Golf", 1, True, 0.0)
-pathGD = Path("Golf Delta", 1, True, 0.0)
+pathAB = Path("Jl. Alfa Bravo", 1, True, 0.0)
+pathAC = Path("Jl. Alfa Charlie", 1, True, 0.0)
+pathAD = Path("Jl. Alfa Delta", 1, True, 0.0)
+pathBG = Path("Jl. Bravo Golf", 1, True, 0.0)
+pathCF = Path("Jl. Charlie Foxtrot", 1, True, 0.0)
+pathDG = Path("Jl. Delta Golf", 1, True, 0.0)
+pathDH = Path("Jl. Delta Hotel", 1, True, 0.0)
+pathFE = Path("Jl. Foxtrot Echo", 1, True, 0.0)
+pathGE = Path("Jl. Golf Echo", 1, True, 0.0)
+pathHC = Path("Jl. Hotel Charlie", 1, True, 0.0)
+pathHE = Path("Jl. Hotel Echo", 1, True, 0.0)
 
-contoh_graph2 = {
-    A : {B : pathAB, E : pathAE},
-    B : {C : pathBC},
-    C : {D : pathCD},
-    D : {},
-    E : {F : pathEF},
-    F : {G : pathFG},
-    G : {D : pathGD}
+graph = {
+    A : {B : pathAB, C : pathAC, D : pathAD},
+    B : {G : pathBG},
+    C : {F : pathCF},
+    D : {G : pathDG, H : pathDH},
+    E : {},
+    F : {E : pathFE},
+    G : {E : pathGE},
+    H : {C : pathHC, E : pathHE},
 }
 
 gr = Graph()
-gr.make_graph(contoh_graph2)
+gr.make_graph(graph)
 gr.scale_distances(1000)
 
 def print_mainPage(): #Evelyn
